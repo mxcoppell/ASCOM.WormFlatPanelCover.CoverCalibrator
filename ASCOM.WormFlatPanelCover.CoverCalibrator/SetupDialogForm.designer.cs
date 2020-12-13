@@ -126,7 +126,7 @@ namespace ASCOM.WormFlatPanelCover
             // 
             this.chkTrace.AutoSize = true;
             this.chkTrace.Font = new System.Drawing.Font("Microsoft YaHei UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkTrace.Location = new System.Drawing.Point(8, 409);
+            this.chkTrace.Location = new System.Drawing.Point(10, 409);
             this.chkTrace.Name = "chkTrace";
             this.chkTrace.Size = new System.Drawing.Size(75, 21);
             this.chkTrace.TabIndex = 6;
@@ -290,7 +290,7 @@ namespace ASCOM.WormFlatPanelCover
             this.label_CoverStatus.Name = "label_CoverStatus";
             this.label_CoverStatus.Size = new System.Drawing.Size(194, 40);
             this.label_CoverStatus.TabIndex = 8;
-            this.label_CoverStatus.Text = "状态： 已打开";
+            this.label_CoverStatus.Text = "镜头盖已打开";
             this.label_CoverStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // panel3
