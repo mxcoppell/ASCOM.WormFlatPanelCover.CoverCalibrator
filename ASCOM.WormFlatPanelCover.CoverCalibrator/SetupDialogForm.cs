@@ -30,7 +30,7 @@ namespace ASCOM.WormFlatPanelCover
         {
             // Place any validation constraint checks here
             // Update the state variables with results from the dialogue
-            CoverCalibrator.comPort = (string)comboBoxComPort.SelectedItem;
+            CoverCalibrator.comPort = (string)comboBox_ComPort.SelectedItem;
             tl.Enabled = chkTrace.Checked;
         }
 
@@ -60,13 +60,18 @@ namespace ASCOM.WormFlatPanelCover
         {
             chkTrace.Checked = tl.Enabled;
             // set the list of com ports to those that are currently available
-            comboBoxComPort.Items.Clear();
-            comboBoxComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());      // use System.IO because it's static
+            comboBox_ComPort.Items.Clear();
+            comboBox_ComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());      // use System.IO because it's static
             // select the current port if possible
-            if (comboBoxComPort.Items.Contains(CoverCalibrator.comPort))
+            if (comboBox_ComPort.Items.Contains(CoverCalibrator.comPort))
             {
-                comboBoxComPort.SelectedItem = CoverCalibrator.comPort;
+                comboBox_ComPort.SelectedItem = CoverCalibrator.comPort;
             }
+        }
+
+        private void chkTrace_CheckedChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
