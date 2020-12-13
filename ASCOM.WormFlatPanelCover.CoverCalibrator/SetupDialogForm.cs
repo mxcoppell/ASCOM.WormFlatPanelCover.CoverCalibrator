@@ -73,5 +73,20 @@ namespace ASCOM.WormFlatPanelCover
         {
 
         }
+
+        private void button_CoverOperation_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_CoverAcceleration_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox_TargetAngle_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 }
