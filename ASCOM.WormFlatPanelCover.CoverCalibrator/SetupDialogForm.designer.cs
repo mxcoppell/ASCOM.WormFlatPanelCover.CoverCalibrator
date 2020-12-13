@@ -149,7 +149,7 @@ namespace ASCOM.WormFlatPanelCover
             this.label_CurrentAngle.AutoSize = true;
             this.label_CurrentAngle.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.label_CurrentAngle.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_CurrentAngle.Location = new System.Drawing.Point(16, 68);
+            this.label_CurrentAngle.Location = new System.Drawing.Point(16, 72);
             this.label_CurrentAngle.Name = "label_CurrentAngle";
             this.label_CurrentAngle.Size = new System.Drawing.Size(99, 19);
             this.label_CurrentAngle.TabIndex = 8;
@@ -160,7 +160,7 @@ namespace ASCOM.WormFlatPanelCover
             this.label_TargetAngle.AutoSize = true;
             this.label_TargetAngle.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.label_TargetAngle.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_TargetAngle.Location = new System.Drawing.Point(213, 68);
+            this.label_TargetAngle.Location = new System.Drawing.Point(213, 72);
             this.label_TargetAngle.Name = "label_TargetAngle";
             this.label_TargetAngle.Size = new System.Drawing.Size(99, 19);
             this.label_TargetAngle.TabIndex = 9;
@@ -203,7 +203,7 @@ namespace ASCOM.WormFlatPanelCover
             this.button_CoverOperation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.button_CoverOperation.Font = new System.Drawing.Font("Microsoft YaHei UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_CoverOperation.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button_CoverOperation.Location = new System.Drawing.Point(32, 137);
+            this.button_CoverOperation.Location = new System.Drawing.Point(33, 141);
             this.button_CoverOperation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.button_CoverOperation.Name = "button_CoverOperation";
             this.button_CoverOperation.Size = new System.Drawing.Size(335, 47);
@@ -215,7 +215,7 @@ namespace ASCOM.WormFlatPanelCover
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox2.Location = new System.Drawing.Point(118, 96);
+            this.textBox2.Location = new System.Drawing.Point(118, 100);
             this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(75, 27);
@@ -225,7 +225,7 @@ namespace ASCOM.WormFlatPanelCover
             // textBox_CoverAcceleration
             // 
             this.textBox_CoverAcceleration.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_CoverAcceleration.Location = new System.Drawing.Point(314, 96);
+            this.textBox_CoverAcceleration.Location = new System.Drawing.Point(314, 100);
             this.textBox_CoverAcceleration.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox_CoverAcceleration.Name = "textBox_CoverAcceleration";
             this.textBox_CoverAcceleration.Size = new System.Drawing.Size(75, 27);
@@ -238,7 +238,7 @@ namespace ASCOM.WormFlatPanelCover
             this.label_CoverAcceleration.AutoSize = true;
             this.label_CoverAcceleration.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.label_CoverAcceleration.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_CoverAcceleration.Location = new System.Drawing.Point(228, 101);
+            this.label_CoverAcceleration.Location = new System.Drawing.Point(228, 105);
             this.label_CoverAcceleration.Name = "label_CoverAcceleration";
             this.label_CoverAcceleration.Size = new System.Drawing.Size(84, 19);
             this.label_CoverAcceleration.TabIndex = 13;
@@ -249,7 +249,7 @@ namespace ASCOM.WormFlatPanelCover
             this.label_CoverMoveSpeed.AutoSize = true;
             this.label_CoverMoveSpeed.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.label_CoverMoveSpeed.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_CoverMoveSpeed.Location = new System.Drawing.Point(16, 101);
+            this.label_CoverMoveSpeed.Location = new System.Drawing.Point(16, 105);
             this.label_CoverMoveSpeed.Name = "label_CoverMoveSpeed";
             this.label_CoverMoveSpeed.Size = new System.Drawing.Size(99, 19);
             this.label_CoverMoveSpeed.TabIndex = 12;
@@ -258,7 +258,7 @@ namespace ASCOM.WormFlatPanelCover
             // textBox_TargetAngle
             // 
             this.textBox_TargetAngle.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox_TargetAngle.Location = new System.Drawing.Point(314, 63);
+            this.textBox_TargetAngle.Location = new System.Drawing.Point(314, 67);
             this.textBox_TargetAngle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.textBox_TargetAngle.Name = "textBox_TargetAngle";
             this.textBox_TargetAngle.Size = new System.Drawing.Size(75, 27);
@@ -271,7 +271,7 @@ namespace ASCOM.WormFlatPanelCover
             this.label_CurrentAngleValue.BackColor = System.Drawing.Color.DimGray;
             this.label_CurrentAngleValue.Font = new System.Drawing.Font("Microsoft YaHei UI", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label_CurrentAngleValue.ForeColor = System.Drawing.Color.White;
-            this.label_CurrentAngleValue.Location = new System.Drawing.Point(118, 63);
+            this.label_CurrentAngleValue.Location = new System.Drawing.Point(118, 67);
             this.label_CurrentAngleValue.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label_CurrentAngleValue.Name = "label_CurrentAngleValue";
             this.label_CurrentAngleValue.Size = new System.Drawing.Size(75, 27);
@@ -334,7 +334,7 @@ namespace ASCOM.WormFlatPanelCover
             this.label_FlatPanels.AutoSize = true;
             this.label_FlatPanels.BackColor = System.Drawing.SystemColors.ControlDarkDark;
             this.label_FlatPanels.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_FlatPanels.Location = new System.Drawing.Point(21, 18);
+            this.label_FlatPanels.Location = new System.Drawing.Point(23, 21);
             this.label_FlatPanels.Name = "label_FlatPanels";
             this.label_FlatPanels.Size = new System.Drawing.Size(84, 19);
             this.label_FlatPanels.TabIndex = 17;
