@@ -40,14 +40,15 @@ namespace ASCOM.WormFlatPanelCover
             this.label_TargetAngle = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.button_CoverOperation = new System.Windows.Forms.Button();
+            this.progressBar_Cover = new System.Windows.Forms.ProgressBar();
+            this.button_CloseCover = new System.Windows.Forms.Button();
+            this.button_OpenCover = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox_CoverAcceleration = new System.Windows.Forms.TextBox();
             this.label_CoverAcceleration = new System.Windows.Forms.Label();
             this.label_CoverMoveSpeed = new System.Windows.Forms.Label();
             this.textBox_TargetAngle = new System.Windows.Forms.TextBox();
             this.label_CurrentAngleValue = new System.Windows.Forms.Label();
-            this.label_CoverStatus = new System.Windows.Forms.Label();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button_FlatPanelLow = new System.Windows.Forms.Button();
             this.comboBox_FlatPanels = new System.Windows.Forms.ComboBox();
@@ -172,7 +173,7 @@ namespace ASCOM.WormFlatPanelCover
             this.panel1.Controls.Add(this.label_Title);
             this.panel1.Controls.Add(this.picASCOM);
             this.panel1.Location = new System.Drawing.Point(0, 0);
-            this.panel1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel1.Margin = new System.Windows.Forms.Padding(2);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(406, 74);
             this.panel1.TabIndex = 10;
@@ -180,43 +181,71 @@ namespace ASCOM.WormFlatPanelCover
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.SystemColors.ActiveBorder;
-            this.panel2.Controls.Add(this.button_CoverOperation);
+            this.panel2.Controls.Add(this.progressBar_Cover);
+            this.panel2.Controls.Add(this.button_CloseCover);
+            this.panel2.Controls.Add(this.button_OpenCover);
             this.panel2.Controls.Add(this.textBox2);
             this.panel2.Controls.Add(this.textBox_CoverAcceleration);
             this.panel2.Controls.Add(this.label_CoverAcceleration);
             this.panel2.Controls.Add(this.label_CoverMoveSpeed);
             this.panel2.Controls.Add(this.textBox_TargetAngle);
             this.panel2.Controls.Add(this.label_CurrentAngleValue);
-            this.panel2.Controls.Add(this.label_CoverStatus);
             this.panel2.Controls.Add(this.label_ComPort);
             this.panel2.Controls.Add(this.label_TargetAngle);
             this.panel2.Controls.Add(this.comboBox_ComPort);
             this.panel2.Controls.Add(this.label_CurrentAngle);
             this.panel2.Location = new System.Drawing.Point(0, 73);
-            this.panel2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(406, 200);
             this.panel2.TabIndex = 11;
             // 
-            // button_CoverOperation
+            // progressBar_Cover
             // 
-            this.button_CoverOperation.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-            this.button_CoverOperation.Font = new System.Drawing.Font("Microsoft YaHei UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_CoverOperation.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.button_CoverOperation.Location = new System.Drawing.Point(33, 141);
-            this.button_CoverOperation.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.button_CoverOperation.Name = "button_CoverOperation";
-            this.button_CoverOperation.Size = new System.Drawing.Size(335, 47);
-            this.button_CoverOperation.TabIndex = 17;
-            this.button_CoverOperation.Text = "关闭镜头盖";
-            this.button_CoverOperation.UseVisualStyleBackColor = false;
-            this.button_CoverOperation.Click += new System.EventHandler(this.button_CoverOperation_Click);
+            this.progressBar_Cover.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.progressBar_Cover.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.progressBar_Cover.Location = new System.Drawing.Point(192, 14);
+            this.progressBar_Cover.Name = "progressBar_Cover";
+            this.progressBar_Cover.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+            this.progressBar_Cover.RightToLeftLayout = true;
+            this.progressBar_Cover.Size = new System.Drawing.Size(198, 36);
+            this.progressBar_Cover.Step = 1;
+            this.progressBar_Cover.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
+            this.progressBar_Cover.TabIndex = 19;
+            this.progressBar_Cover.Value = 75;
+            // 
+            // button_CloseCover
+            // 
+            this.button_CloseCover.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.button_CloseCover.Font = new System.Drawing.Font("Microsoft YaHei UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_CloseCover.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button_CloseCover.Location = new System.Drawing.Point(210, 141);
+            this.button_CloseCover.Margin = new System.Windows.Forms.Padding(2);
+            this.button_CloseCover.Name = "button_CloseCover";
+            this.button_CloseCover.Size = new System.Drawing.Size(179, 47);
+            this.button_CloseCover.TabIndex = 18;
+            this.button_CloseCover.Text = "关闭镜头盖";
+            this.button_CloseCover.UseVisualStyleBackColor = false;
+            // 
+            // button_OpenCover
+            // 
+            this.button_OpenCover.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(192)))), ((int)(((byte)(0)))));
+            this.button_OpenCover.Font = new System.Drawing.Font("Microsoft YaHei UI", 18F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_OpenCover.ForeColor = System.Drawing.SystemColors.ButtonFace;
+            this.button_OpenCover.Location = new System.Drawing.Point(19, 141);
+            this.button_OpenCover.Margin = new System.Windows.Forms.Padding(2);
+            this.button_OpenCover.Name = "button_OpenCover";
+            this.button_OpenCover.Size = new System.Drawing.Size(179, 47);
+            this.button_OpenCover.TabIndex = 17;
+            this.button_OpenCover.Text = "打开镜头盖";
+            this.button_OpenCover.UseVisualStyleBackColor = false;
+            this.button_OpenCover.Click += new System.EventHandler(this.button_CoverOperation_Click);
             // 
             // textBox2
             // 
             this.textBox2.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox2.Location = new System.Drawing.Point(118, 100);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox2.Margin = new System.Windows.Forms.Padding(2);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(75, 27);
             this.textBox2.TabIndex = 16;
@@ -226,7 +255,7 @@ namespace ASCOM.WormFlatPanelCover
             // 
             this.textBox_CoverAcceleration.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_CoverAcceleration.Location = new System.Drawing.Point(314, 100);
-            this.textBox_CoverAcceleration.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_CoverAcceleration.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_CoverAcceleration.Name = "textBox_CoverAcceleration";
             this.textBox_CoverAcceleration.Size = new System.Drawing.Size(75, 27);
             this.textBox_CoverAcceleration.TabIndex = 15;
@@ -259,7 +288,7 @@ namespace ASCOM.WormFlatPanelCover
             // 
             this.textBox_TargetAngle.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBox_TargetAngle.Location = new System.Drawing.Point(314, 67);
-            this.textBox_TargetAngle.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBox_TargetAngle.Margin = new System.Windows.Forms.Padding(2);
             this.textBox_TargetAngle.Name = "textBox_TargetAngle";
             this.textBox_TargetAngle.Size = new System.Drawing.Size(75, 27);
             this.textBox_TargetAngle.TabIndex = 11;
@@ -279,20 +308,6 @@ namespace ASCOM.WormFlatPanelCover
             this.label_CurrentAngleValue.Text = "525";
             this.label_CurrentAngleValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label_CoverStatus
-            // 
-            this.label_CoverStatus.BackColor = System.Drawing.Color.Green;
-            this.label_CoverStatus.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.label_CoverStatus.Font = new System.Drawing.Font("Microsoft YaHei UI", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label_CoverStatus.ForeColor = System.Drawing.SystemColors.ButtonFace;
-            this.label_CoverStatus.Location = new System.Drawing.Point(195, 11);
-            this.label_CoverStatus.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.label_CoverStatus.Name = "label_CoverStatus";
-            this.label_CoverStatus.Size = new System.Drawing.Size(194, 40);
-            this.label_CoverStatus.TabIndex = 8;
-            this.label_CoverStatus.Text = "镜头盖已打开";
-            this.label_CoverStatus.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.ControlDarkDark;
@@ -302,7 +317,7 @@ namespace ASCOM.WormFlatPanelCover
             this.panel3.Controls.Add(this.button_FlatPanelHigh);
             this.panel3.Controls.Add(this.button_FlatPanelOff);
             this.panel3.Location = new System.Drawing.Point(0, 273);
-            this.panel3.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.panel3.Margin = new System.Windows.Forms.Padding(2);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(408, 100);
             this.panel3.TabIndex = 12;
@@ -310,8 +325,8 @@ namespace ASCOM.WormFlatPanelCover
             // button_FlatPanelLow
             // 
             this.button_FlatPanelLow.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_FlatPanelLow.Location = new System.Drawing.Point(272, 51);
-            this.button_FlatPanelLow.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_FlatPanelLow.Location = new System.Drawing.Point(272, 52);
+            this.button_FlatPanelLow.Margin = new System.Windows.Forms.Padding(2);
             this.button_FlatPanelLow.Name = "button_FlatPanelLow";
             this.button_FlatPanelLow.Size = new System.Drawing.Size(115, 34);
             this.button_FlatPanelLow.TabIndex = 15;
@@ -323,7 +338,7 @@ namespace ASCOM.WormFlatPanelCover
             this.comboBox_FlatPanels.Font = new System.Drawing.Font("Microsoft YaHei UI", 11F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.comboBox_FlatPanels.FormattingEnabled = true;
             this.comboBox_FlatPanels.Location = new System.Drawing.Point(112, 16);
-            this.comboBox_FlatPanels.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBox_FlatPanels.Margin = new System.Windows.Forms.Padding(2);
             this.comboBox_FlatPanels.Name = "comboBox_FlatPanels";
             this.comboBox_FlatPanels.Size = new System.Drawing.Size(275, 28);
             this.comboBox_FlatPanels.TabIndex = 13;
@@ -344,8 +359,8 @@ namespace ASCOM.WormFlatPanelCover
             // 
             this.button_FlatPanelHigh.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button_FlatPanelHigh.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_FlatPanelHigh.Location = new System.Drawing.Point(20, 51);
-            this.button_FlatPanelHigh.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_FlatPanelHigh.Location = new System.Drawing.Point(20, 52);
+            this.button_FlatPanelHigh.Margin = new System.Windows.Forms.Padding(2);
             this.button_FlatPanelHigh.Name = "button_FlatPanelHigh";
             this.button_FlatPanelHigh.Size = new System.Drawing.Size(115, 34);
             this.button_FlatPanelHigh.TabIndex = 13;
@@ -357,8 +372,8 @@ namespace ASCOM.WormFlatPanelCover
             this.button_FlatPanelOff.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.button_FlatPanelOff.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.button_FlatPanelOff.ForeColor = System.Drawing.SystemColors.ControlLightLight;
-            this.button_FlatPanelOff.Location = new System.Drawing.Point(146, 51);
-            this.button_FlatPanelOff.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.button_FlatPanelOff.Location = new System.Drawing.Point(146, 52);
+            this.button_FlatPanelOff.Margin = new System.Windows.Forms.Padding(2);
             this.button_FlatPanelOff.Name = "button_FlatPanelOff";
             this.button_FlatPanelOff.Size = new System.Drawing.Size(115, 34);
             this.button_FlatPanelOff.TabIndex = 14;
@@ -408,7 +423,6 @@ namespace ASCOM.WormFlatPanelCover
         private System.Windows.Forms.Label label_TargetAngle;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label label_CoverStatus;
         private System.Windows.Forms.Label label_CurrentAngleValue;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox_CoverAcceleration;
@@ -421,6 +435,8 @@ namespace ASCOM.WormFlatPanelCover
         private System.Windows.Forms.ComboBox comboBox_FlatPanels;
         private System.Windows.Forms.Button button_FlatPanelOff;
         private System.Windows.Forms.Button button_FlatPanelHigh;
-        private System.Windows.Forms.Button button_CoverOperation;
+        private System.Windows.Forms.Button button_OpenCover;
+        private System.Windows.Forms.Button button_CloseCover;
+        private System.Windows.Forms.ProgressBar progressBar_Cover;
     }
 }
