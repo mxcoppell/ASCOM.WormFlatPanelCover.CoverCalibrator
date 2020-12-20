@@ -14,7 +14,7 @@ namespace ASCOM.WormFlatPanelCover
 
         SerialPort serial_port = new SerialPort();
 
-        public WormSerialPortWrapper(TraceLogger logger, bool is_simulation) : base(logger, is_simulation)
+        public WormSerialPortWrapper(CoverCalibrator drv, bool is_simulation) : base(drv, is_simulation)
         {
             if (IsSimulation)
             {
@@ -29,15 +29,16 @@ namespace ASCOM.WormFlatPanelCover
 
         ~WormSerialPortWrapper()
         {
-            Close();
+            Disconnect();
         }
 
         new bool Connect()
         {
-            return true;
+            return false;
         }
         new bool Disconnect()
         {
+            if (serial_port.IsOpen) serial_port.Close();
             return true;
         }
 

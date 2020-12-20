@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using ASCOM.Utilities;
 
 namespace ASCOM.WormFlatPanelCover
@@ -22,7 +23,7 @@ namespace ASCOM.WormFlatPanelCover
             get { return flatpanel_serial_numbers.ToArray(); }
         }
 
-        public WormFlatPanelWrapper(TraceLogger logger, bool is_simulation) : base(logger, true)
+        public WormFlatPanelWrapper(CoverCalibrator drv, bool is_simulation) : base(drv, true)
         {
             if (IsSimulation)
                 LogMessage("FlatPanel", "Simulation mode is ON.");
@@ -33,19 +34,28 @@ namespace ASCOM.WormFlatPanelCover
         }
         ~WormFlatPanelWrapper()
         {
+            Disconnect();
+        }
+
+        new bool Connect()
+        {
+            Disconnect();
+            device_handle = OpenDeviceHandle(TargetSerialNumber);
+            if (device_handle == 0) {
+                LogMessage("FlatPanel", "Failed to connect flat panel device ({0}).", Driver.lastUsedFlatPanelSerial);
+                MessageBox.Show("未能连接平场板设备【" + Driver.lastUsedFlatPanelSerial + "】", "平场板设备", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+        new bool Disconnect()
+        {
             if (!IsSimulation)
             {
                 if (device_handle != 0)
                     UsbRelayDeviceHelper.Close(device_handle);
             }
-        }
-
-        new bool Connect()
-        {
-            return true;
-        }
-        new bool Disconnect()
-        {
             return true;
         }
 
@@ -90,7 +100,7 @@ namespace ASCOM.WormFlatPanelCover
         {
             if (serialnumber != "")
             {
-                int retval = 1; //  dummy device handle
+                int retval = 1; //  dummy device handle for simulation mode
                 if (!IsSimulation)
                     retval = UsbRelayDeviceHelper.OpenWithSerialNumber(serialnumber, serialnumber.Length);
                 LogMessage("FlatPanel", makeLogStr("Got device handle (" + retval + ") with usb relay device serial number (" + serialnumber + ")."));
