@@ -26,18 +26,13 @@
 // unused code can be deleted and this definition removed.
 #define CoverCalibrator
 
-using ASCOM;
-using ASCOM.Astrometry;
 using ASCOM.Astrometry.AstroUtils;
 using ASCOM.DeviceInterface;
 using ASCOM.Utilities;
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.InteropServices;
-using System.Text;
 
 namespace ASCOM.WormFlatPanelCover
 {

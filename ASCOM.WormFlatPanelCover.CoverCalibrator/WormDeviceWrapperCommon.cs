@@ -5,12 +5,11 @@ namespace ASCOM.WormFlatPanelCover
 {
     public class WormDeviceWrapperCommon
     {
-        CoverCalibrator driver;
         TraceLogger tl;
         public WormDeviceWrapperCommon(CoverCalibrator drv, bool is_simulation)
         {
             Driver = drv;
-            tl = driver.tl;
+            tl = Driver.tl;
             IsSimulation = is_simulation;
         }
 
