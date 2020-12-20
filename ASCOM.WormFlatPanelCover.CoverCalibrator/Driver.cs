@@ -140,10 +140,10 @@ namespace ASCOM.WormFlatPanelCover
 
             //TODO: Implement your additional construction here
             cover = new WormCoverWrapper(this, simulationState);
-            tl.LogMessage("CoverCalibrator", "Serial port cover controller created (Simulation:{0}).", simulationState);
+            LogMessage("CoverCalibrator", "Serial port cover controller created (Simulation:{0}).", simulationState);
 
             flat_panel = new WormFlatPanelWrapper(this, simulationState);
-            tl.LogMessage("CoverCalibrator", "Flat panel controller created (Simulation:{0}).", simulationState);
+            LogMessage("CoverCalibrator", "Flat panel controller created (Simulation:{0}).", simulationState);
 
             tl.LogMessage("CoverCalibrator", "Completed initialisation");
         }
@@ -253,13 +253,18 @@ namespace ASCOM.WormFlatPanelCover
                 {
                     connectedState = true;
                     LogMessage("Connected Set", "Connecting to port {0}", comPort);
-                    // TODO connect to the device
+
+                    flat_panel.Connect();
+                    if (!cover.Connect())
+                        connectedState = false;
                 }
                 else
                 {
                     connectedState = false;
                     LogMessage("Connected Set", "Disconnecting from port {0}", comPort);
-                    // TODO disconnect from the device
+
+                    flat_panel.Disconnect();
+                    cover.Disconnect();
                 }
             }
         }

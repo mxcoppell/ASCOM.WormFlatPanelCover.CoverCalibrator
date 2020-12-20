@@ -39,13 +39,16 @@ namespace ASCOM.WormFlatPanelCover
         protected string makeLogStr(string value)
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append("Simulation[" + IsSimulation + "] " + value);
+            if (IsSimulation)
+                sb.Append("[Simulation] " + value);
+            else
+                sb.Append(value);
             return sb.ToString();
         }
         internal void LogMessage(string identifier, string message, params object[] args)
         {
             var msg = string.Format(message, args);
-            tl.LogMessage(identifier, msg);
+            tl.LogMessage(identifier, makeLogStr(msg));
         }
     }
 }

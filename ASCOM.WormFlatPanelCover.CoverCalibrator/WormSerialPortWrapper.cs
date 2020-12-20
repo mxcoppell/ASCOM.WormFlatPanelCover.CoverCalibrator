@@ -32,13 +32,10 @@ namespace ASCOM.WormFlatPanelCover
             Disconnect();
         }
 
-        new bool Connect()
-        {
-            return false;
-        }
-        new bool Disconnect()
+        public new bool Disconnect()
         {
             if (serial_port.IsOpen) serial_port.Close();
+            LogMessage("Serial Port", "INFO: (Disconnect) Serial port closed. ({0}))", Driver.comPort);
             return true;
         }
 
@@ -55,7 +52,7 @@ namespace ASCOM.WormFlatPanelCover
                 port_name = value;
                 if (!IsSimulation)
                     serial_port.PortName = port_name;
-                LogMessage("SerialPort", makeLogStr("Port name set: " + PortName));
+                LogMessage("SerialPort", "Port name set: {0}", PortName);
             }
         }
         public int BaudRate
@@ -66,7 +63,7 @@ namespace ASCOM.WormFlatPanelCover
                 baud_rate = value;
                 if (!IsSimulation)
                     serial_port.BaudRate = baud_rate;
-                LogMessage("SerialPort", makeLogStr("Baudrate set: " + BaudRate));
+                LogMessage("SerialPort", "Baudrate set: {0}", BaudRate);
             }
         }
         public int ReadTimeout
@@ -77,7 +74,7 @@ namespace ASCOM.WormFlatPanelCover
                 read_timeout = value;
                 if (!IsSimulation)
                     serial_port.ReadTimeout = read_timeout;
-                LogMessage("SerialPort", makeLogStr("Readtimeout set: " + read_timeout));
+                LogMessage("SerialPort", "Readtimeout set: {0}", read_timeout);
             }
         }
         public bool IsOpen
@@ -85,7 +82,7 @@ namespace ASCOM.WormFlatPanelCover
             get
             {
                 bool retval = IsSimulation ? sim_opened : serial_port.IsOpen;
-                LogMessage("SerialPort", makeLogStr("Serial port open status: " + retval));
+                LogMessage("SerialPort", "Serial port open status: {0}", retval);
                 return retval;
             }
         }
@@ -96,7 +93,7 @@ namespace ASCOM.WormFlatPanelCover
                 sim_opened = true;
             else
                 serial_port.Open();
-            LogMessage("SerialPort", makeLogStr("Serial port opened."));
+            LogMessage("SerialPort", "Serial port opened.");
         }
         public void Close()
         {
@@ -104,19 +101,19 @@ namespace ASCOM.WormFlatPanelCover
                 sim_opened = false;
             else
                 serial_port.Close();
-            LogMessage("SerialPort", makeLogStr("Serial port closed."));
+            LogMessage("SerialPort", "Serial port closed.");
         }
         public void DiscardInBuffer()
         {
             if (!IsSimulation)
                 serial_port.DiscardInBuffer();
-            LogMessage("SerialPort", makeLogStr("Serial port input buffer cleared."));
+            LogMessage("SerialPort", "Serial port input buffer cleared.");
         }
         public void DiscardOutBuffer()
         {
             if (!IsSimulation)
                 serial_port.DiscardOutBuffer();
-            LogMessage("SerialPort", makeLogStr("Serial port output buffer cleared."));
+            LogMessage("SerialPort", "Serial port output buffer cleared.");
         }
 
         public void Write(byte[] buffer, int offset, int count)
@@ -125,7 +122,7 @@ namespace ASCOM.WormFlatPanelCover
             {
                 serial_port.Write(buffer, offset, count);
             }
-            LogMessage("SerialPort", makeLogStr("TX >>> " + makeByteStr(buffer, count)));
+            LogMessage("SerialPort", "TX >>> {0}", makeByteStr(buffer, count));
         }
         public int Read(byte[] buffer, int offset, int count)
         {
@@ -138,7 +135,7 @@ namespace ASCOM.WormFlatPanelCover
             {
                 serial_port.Read(buffer, offset, count);
             }
-            LogMessage("SerialPort", makeLogStr("RX <<< " + makeByteStr(buffer, count)));
+            LogMessage("SerialPort", "RX <<< {0}", makeByteStr(buffer, count));
             return 0;
         }
 

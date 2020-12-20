@@ -25,7 +25,7 @@ namespace ASCOM.WormFlatPanelCover
             return BitConverter.GetBytes(checkSum)[0];
         }
 
-        public bool Connect(string com_port)
+        public new bool Connect()
         {
             if (IsOpen)
                 Close();
@@ -33,7 +33,7 @@ namespace ASCOM.WormFlatPanelCover
             bool retval = false;
             try
             {
-                PortName = com_port;
+                PortName = Driver.comPort;
                 Open(); Close();
                 retval = true;
             }
@@ -47,7 +47,7 @@ namespace ASCOM.WormFlatPanelCover
             }
 
             // Setup parameters, initialize COM port
-            PortName = com_port;
+            PortName = Driver.comPort;
             BaudRate = 9600;
             Open();
             ReadTimeout = 1000;
