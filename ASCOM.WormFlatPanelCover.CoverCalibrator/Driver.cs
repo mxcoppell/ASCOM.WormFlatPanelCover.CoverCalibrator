@@ -1,4 +1,4 @@
-//tabs=4
+﻿//tabs=4
 // --------------------------------------------------------------------------------
 // TODO fill in this information for your driver, then remove this line!
 //
@@ -68,19 +68,46 @@ namespace ASCOM.WormFlatPanelCover
         /// <summary>
         /// Driver description that displays in the ASCOM Chooser.
         /// </summary>
-        private static string driverDescription = "ASCOM CoverCalibrator Driver for WormFlatPanelCover.";
+        private static string driverDescription = "虫子电动平场镜头盖";
 
         internal static string comPortProfileName = "COM Port"; // Constants used for Profile persistence
-        internal static string comPortDefault = "COM1";
-        internal static string traceStateProfileName = "Trace Level";
-        internal static string traceStateDefault = "false";
-
+        internal static string comPortDefault = "COM3";
         internal static string comPort; // Variables to hold the current device configuration
+
+        internal static string currentAngleProfileName = "Current cover opened angle";
+        internal static string currentAngleDefault = "0";
+        internal static int currentAngle;  // Current cover opened angle
+
+        internal static string targetAngleProfileName = "Target angle / cover travel range";
+        internal static string targetAngleDefault = "525";
+        internal static int targetAngle;   // Target angle / cover travel range
+
+        internal static string coverMovingSpeedProfileName = "Cover moving speed";
+        internal static string coverMovingSpeedDefault = "200";
+        internal static int coverMovingSpeed;  // Cover moving speed
+
+        internal static string coverMovingAccelerationProfileName = "Cover moving accerlation";
+        internal static string coverMovingAccelerationDefault = "10";
+        internal static int coverMovingAcceleration;   // Cover moving accerlation
+
+        internal static string lastUsedFlatPanelSerialProfileName = "Serial number string of the last used flat panel";
+        internal static string lastUsedFlatPanelSerialDefault = "";
+        internal static string lastUsedFlatPanelSerial;  // Serial number string of the last used flat panel
+
+        internal static string traceStateProfileName = "Trace Level";
+        internal static string traceStateDefault = "true";
+
+        /// <summary>
+        /// Device wrappers
+        /// </summary>
+        internal static WormSerialPortWrapper serial_port;
+        internal static WormFlatPanelWrapper flat_panel;
 
         /// <summary>
         /// Private variable to hold the connected state
         /// </summary>
         private bool connectedState;
+
 
         /// <summary>
         /// Private variable to hold an ASCOM Utilities object
@@ -111,7 +138,13 @@ namespace ASCOM.WormFlatPanelCover
             connectedState = false; // Initialise connected to false
             utilities = new Util(); //Initialise util object
             astroUtilities = new AstroUtils(); // Initialise astro-utilities object
+
             //TODO: Implement your additional construction here
+            serial_port = new WormSerialPortWrapper(tl, true);
+            tl.LogMessage("CoverCalibrator", "Serial port cover controller created.");
+
+            flat_panel = new WormFlatPanelWrapper(tl, true);
+            tl.LogMessage("CoverCalibrator", "USB-Relay flat panel controller created.");
 
             tl.LogMessage("CoverCalibrator", "Completed initialisation");
         }
@@ -497,6 +530,11 @@ namespace ASCOM.WormFlatPanelCover
                 driverProfile.DeviceType = "CoverCalibrator";
                 tl.Enabled = Convert.ToBoolean(driverProfile.GetValue(driverID, traceStateProfileName, string.Empty, traceStateDefault));
                 comPort = driverProfile.GetValue(driverID, comPortProfileName, string.Empty, comPortDefault);
+                currentAngle = Int32.Parse(driverProfile.GetValue(driverID, currentAngleProfileName, string.Empty, currentAngleDefault));
+                targetAngle = Int32.Parse(driverProfile.GetValue(driverID, targetAngleProfileName, string.Empty, targetAngleDefault));
+                coverMovingSpeed = Int32.Parse(driverProfile.GetValue(driverID, coverMovingSpeedProfileName, string.Empty, coverMovingSpeedDefault));
+                coverMovingAcceleration = Int32.Parse(driverProfile.GetValue(driverID, coverMovingAccelerationProfileName, string.Empty, coverMovingAccelerationDefault));
+                lastUsedFlatPanelSerial = driverProfile.GetValue(driverID, lastUsedFlatPanelSerialProfileName, string.Empty, lastUsedFlatPanelSerialDefault);
             }
         }
 
@@ -510,6 +548,11 @@ namespace ASCOM.WormFlatPanelCover
                 driverProfile.DeviceType = "CoverCalibrator";
                 driverProfile.WriteValue(driverID, traceStateProfileName, tl.Enabled.ToString());
                 driverProfile.WriteValue(driverID, comPortProfileName, comPort.ToString());
+                driverProfile.WriteValue(driverID, currentAngleProfileName, currentAngle.ToString());
+                driverProfile.WriteValue(driverID, targetAngleProfileName, targetAngle.ToString());
+                driverProfile.WriteValue(driverID, coverMovingSpeedProfileName, coverMovingSpeed.ToString());
+                driverProfile.WriteValue(driverID, coverMovingAccelerationProfileName, coverMovingAcceleration.ToString());
+                driverProfile.WriteValue(driverID, lastUsedFlatPanelSerialProfileName, lastUsedFlatPanelSerial.ToString());
             }
         }
 

@@ -31,6 +31,11 @@ namespace ASCOM.WormFlatPanelCover
             // Place any validation constraint checks here
             // Update the state variables with results from the dialogue
             CoverCalibrator.comPort = (string)comboBox_ComPort.SelectedItem;
+            CoverCalibrator.currentAngle = Int32.Parse(label_CurrentAngleValue.Text);
+            CoverCalibrator.targetAngle = Int32.Parse(textBox_TargetAngle.Text);
+            CoverCalibrator.coverMovingSpeed = Int32.Parse(textBox_CoverMoveSpeed.Text);
+            CoverCalibrator.coverMovingAcceleration = Int32.Parse(textBox_CoverAcceleration.Text);
+            CoverCalibrator.lastUsedFlatPanelSerial = (string)comboBox_FlatPanels.SelectedItem;
             tl.Enabled = chkTrace.Checked;
         }
 
@@ -59,14 +64,36 @@ namespace ASCOM.WormFlatPanelCover
         private void InitUI()
         {
             chkTrace.Checked = tl.Enabled;
+
             // set the list of com ports to those that are currently available
             comboBox_ComPort.Items.Clear();
-            comboBox_ComPort.Items.AddRange(System.IO.Ports.SerialPort.GetPortNames());      // use System.IO because it's static
+            comboBox_ComPort.Items.AddRange(CoverCalibrator.serial_port.PortNames);
             // select the current port if possible
             if (comboBox_ComPort.Items.Contains(CoverCalibrator.comPort))
             {
                 comboBox_ComPort.SelectedItem = CoverCalibrator.comPort;
             }
+
+            // set the list of flat panel serial numbers that are available
+            comboBox_FlatPanels.Items.Clear();
+            comboBox_FlatPanels.Items.AddRange(CoverCalibrator.flat_panel.SerialNumbers);
+            // select the current port if possible
+            if (comboBox_FlatPanels.Items.Contains(CoverCalibrator.lastUsedFlatPanelSerial))
+            {
+                comboBox_FlatPanels.SelectedItem = CoverCalibrator.lastUsedFlatPanelSerial;
+            }
+
+            // set current cover angle
+            label_CurrentAngleValue.Text = CoverCalibrator.currentAngle.ToString();
+            // set target cover angle
+            textBox_TargetAngle.Text = CoverCalibrator.targetAngle.ToString();
+            // set cover moving speed
+            textBox_CoverMoveSpeed.Text = CoverCalibrator.coverMovingSpeed.ToString();
+            // set cover moving acceleration
+            textBox_CoverAcceleration.Text = CoverCalibrator.coverMovingAcceleration.ToString();
+            // set cover opening progress bar
+            progressBar_Cover.Maximum = CoverCalibrator.targetAngle;
+            progressBar_Cover.Value = CoverCalibrator.currentAngle;
         }
 
         private void chkTrace_CheckedChanged(object sender, EventArgs e)
@@ -85,6 +112,41 @@ namespace ASCOM.WormFlatPanelCover
         }
 
         private void textBox_TargetAngle_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void comboBox_ComPort_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_FlatPanelHigh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_FlatPanelOff_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_FlatPanelLow_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button_CloseCover_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label_CurrentAngleValue_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chkSimulation_CheckedChanged(object sender, EventArgs e)
         {
 
         }

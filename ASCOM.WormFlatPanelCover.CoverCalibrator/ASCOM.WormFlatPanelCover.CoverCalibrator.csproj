@@ -81,7 +81,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="WormLogger.cs" />
     <Compile Include="WormUtility.cs" />
     <Compile Include="WormDeviceWrapperCommon.cs" />
     <Compile Include="Driver.cs" />

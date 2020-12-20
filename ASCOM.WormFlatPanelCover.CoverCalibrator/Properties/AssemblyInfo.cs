@@ -8,12 +8,12 @@ using System.Runtime.InteropServices;
 //
 // TODO - Add your authorship information here
 [assembly: AssemblyTitle("ASCOM.WormFlatPanelCover.CoverCalibrator")]
-[assembly: AssemblyDescription("ASCOM CoverCalibrator driver for WormFlatPanelCover")]
+[assembly: AssemblyDescription("虫子电动平场镜头盖")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("The ASCOM Initiative")]
-[assembly: AssemblyProduct("ASCOM CoverCalibrator driver for WormFlatPanelCover")]
-[assembly: AssemblyCopyright("Copyright © 2020 The ASCOM Initiative")]
-[assembly: AssemblyTrademark("")]
+[assembly: AssemblyCompany("虫子出品")]
+[assembly: AssemblyProduct("虫子电动平场镜头盖")]
+[assembly: AssemblyCopyright("Copyright © 2020 虫子出品")]
+[assembly: AssemblyTrademark("虫子出品")]
 [assembly: AssemblyCulture("")]
 
 // Setting ComVisible to false makes the types in this assembly not visible 

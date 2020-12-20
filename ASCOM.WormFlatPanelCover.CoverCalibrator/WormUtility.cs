@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Configuration;
+using ASCOM.Utilities;
 
 namespace ASCOM.WormFlatPanelCover
 {
@@ -14,10 +11,10 @@ namespace ASCOM.WormFlatPanelCover
         Thread thd_closecover = null;
 
         /* !!! */
-        static bool is_simulation = false;
+        static bool is_simulation = true;
 
-        WormSerialPortWrapper serial_port = new WormSerialPortWrapper(is_simulation);
-        WormFlatPanelWrapper flatpanel = new WormFlatPanelWrapper(is_simulation);
+        WormSerialPortWrapper serial_port;
+        WormFlatPanelWrapper flatpanel;
 
         public Configuration appConf = null;
 
@@ -30,8 +27,15 @@ namespace ASCOM.WormFlatPanelCover
         private bool operation_done = false;
         //ExeConfigurationFileMap map = new ExeConfigurationFileMap { ExeConfigFilename = "./WormCover.exe.Config" };
 
-        public WormUtility()
+        TraceLogger tl;
+
+        public WormUtility(TraceLogger logger)
         {
+            tl = logger;
+        
+            serial_port = new WormSerialPortWrapper(tl, is_simulation);
+            flatpanel = new WormFlatPanelWrapper(tl, is_simulation);
+
             string v1 = ConfigurationManager.AppSettings["Version1"].ToString(); ;
             int ver1;
             ver1 = Convert.ToInt32(v1);
@@ -52,14 +56,14 @@ namespace ASCOM.WormFlatPanelCover
 
         public void show_configuration()
         {
-            WormLogger.Log("WormCover Configuration/Status");
-            WormLogger.Log("------------------------------");
-            WormLogger.Log("     COM Port: " + com_port);
-            WormLogger.Log("Current Angle: " + open_angle);
-            WormLogger.Log(" Target Angle: " + target_angle);
-            WormLogger.Log("        Speed: " + cover_speed);
-            WormLogger.Log(" Acceleration: " + cover_acceleration);
-            WormLogger.Log("---");
+            tl.LogMessage("WormUtility", "WormCover Configuration/Status");
+            tl.LogMessage("WormUtility", "------------------------------");
+            tl.LogMessage("WormUtility", "     COM Port: " + com_port);
+            tl.LogMessage("WormUtility", "Current Angle: " + open_angle);
+            tl.LogMessage("WormUtility", " Target Angle: " + target_angle);
+            tl.LogMessage("WormUtility", "        Speed: " + cover_speed);
+            tl.LogMessage("WormUtility", " Acceleration: " + cover_acceleration);
+            tl.LogMessage("WormUtility", "---");
         }
 
         public bool open_serial_port(string serial_port)
@@ -88,7 +92,7 @@ namespace ASCOM.WormFlatPanelCover
                 }
                 if (!serialok)
                 {
-                    WormLogger.Log("ERROR: (open_serial_port) failed to open serial port.");
+                    tl.LogMessage("WormUtility", "ERROR: (open_serial_port) failed to open serial port.");
                     return false;
                 }
 
@@ -115,7 +119,7 @@ namespace ASCOM.WormFlatPanelCover
                 }
                 catch (TimeoutException)
                 {
-                    WormLogger.Log("ERROR: (open_serial_port) checkpoint #1, Incorrect serial port.");
+                    tl.LogMessage("WormUtility", "ERROR: (open_serial_port) checkpoint #1, Incorrect serial port.");
                     this.serial_port.Close();
                     return false;
                 }
@@ -136,17 +140,17 @@ namespace ASCOM.WormFlatPanelCover
                 }
                 catch (TimeoutException)
                 {
-                    WormLogger.Log("ERROR: (open_serial_port) checkpoint #2, Incorrect serial port.");
+                    tl.LogMessage("WormUtility", "ERROR: (open_serial_port) checkpoint #2, Incorrect serial port.");
                     this.serial_port.Close();
                     return false;
                 }
 
-                WormLogger.Log("INFO: (open_serial_port) serial port connected.");
+                tl.LogMessage("WormUtility", "INFO: (open_serial_port) serial port connected.");
 
                 //release motor
                 if (!this.serial_port.IsOpen)
                 {
-                    WormLogger.Log("ERROR: (open_serial_port) checkpoint #3, serial port not opened.");
+                    tl.LogMessage("WormUtility", "ERROR: (open_serial_port) checkpoint #3, serial port not opened.");
                     return false;
                 }
 
@@ -163,7 +167,7 @@ namespace ASCOM.WormFlatPanelCover
                 }
                 catch (TimeoutException)
                 {
-                    WormLogger.Log("ERROR: (open_serial_port) checkpoint #4, incorrect serial port.");
+                    tl.LogMessage("WormUtility", "ERROR: (open_serial_port) checkpoint #4, incorrect serial port.");
                     this.serial_port.Close();
                     return false;
                 }
@@ -181,17 +185,17 @@ namespace ASCOM.WormFlatPanelCover
         {
             if (open_angle >= target_angle)
             {
-                WormLogger.Log("INFO: (open_cover) worm cover already opened.");
+                tl.LogMessage("WormUtility", "INFO: (open_cover) worm cover already opened.");
                 return;
             }
 
             if (!serial_port.IsOpen)
             {
-                WormLogger.Log("ERROR: (open_cover) checkpoint #1, serial port not opened.");
+                tl.LogMessage("WormUtility", "ERROR: (open_cover) checkpoint #1, serial port not opened.");
                 return;
             }
 
-            WormLogger.Log("INFO: (open_cover) open worm cover...");
+            tl.LogMessage("WormUtility", "INFO: (open_cover) open worm cover...");
 
             //设置距离
             serial_port.DiscardInBuffer();
@@ -216,7 +220,7 @@ namespace ASCOM.WormFlatPanelCover
             }
             catch (TimeoutException)
             {
-                WormLogger.Log("ERROR: (open_cover) checkpoint #2, invalid serial port.");
+                tl.LogMessage("WormUtility", "ERROR: (open_cover) checkpoint #2, invalid serial port.");
                 serial_port.Close();
                 return;
             }
@@ -236,7 +240,7 @@ namespace ASCOM.WormFlatPanelCover
             }
             catch (TimeoutException)
             {
-                WormLogger.Log("ERROR: (open_cover) checkpoint #3, invalid serial port.");
+                tl.LogMessage("WormUtility", "ERROR: (open_cover) checkpoint #3, invalid serial port.");
                 serial_port.Close();
                 return;
             }
@@ -262,17 +266,17 @@ namespace ASCOM.WormFlatPanelCover
         {
             if (open_angle == 0)
             {
-                WormLogger.Log("INFO: (close_cover) worm cover already closed.");
+                tl.LogMessage("WormUtility", "INFO: (close_cover) worm cover already closed.");
                 return;
             }
 
             if (!serial_port.IsOpen)
             {
-                WormLogger.Log("ERROR: (close_cove) checkpoint #1, serial port not opened.");
+                tl.LogMessage("WormUtility", "ERROR: (close_cove) checkpoint #1, serial port not opened.");
                 return;
             }
 
-            WormLogger.Log("INFO: (close_cove) close worm cover...");
+            tl.LogMessage("WormUtility", "INFO: (close_cove) close worm cover...");
 
             //设置距离
             serial_port.DiscardInBuffer();
@@ -297,7 +301,7 @@ namespace ASCOM.WormFlatPanelCover
             }
             catch (TimeoutException)
             {
-                WormLogger.Log("ERROR: (close_cove) checkpoint #4, invalid serial port.");
+                tl.LogMessage("WormUtility", "ERROR: (close_cove) checkpoint #4, invalid serial port.");
                 serial_port.Close();
                 return;
             }
@@ -317,7 +321,7 @@ namespace ASCOM.WormFlatPanelCover
             }
             catch (TimeoutException)
             {
-                WormLogger.Log("ERROR: (close_cove) checkpoint #5, invalid serial port.");
+                tl.LogMessage("WormUtility", "ERROR: (close_cove) checkpoint #5, invalid serial port.");
                 serial_port.Close();
                 return;
             }
@@ -360,7 +364,7 @@ namespace ASCOM.WormFlatPanelCover
             }
             catch (TimeoutException)
             {
-                WormLogger.Log("ERROR: (get_real_time_angle) checkpoint #1, invalid serial port.");
+                tl.LogMessage("WormUtility", "ERROR: (get_real_time_angle) checkpoint #1, invalid serial port.");
                 serial_port.Close();
                 return -999;
             }
@@ -390,7 +394,7 @@ namespace ASCOM.WormFlatPanelCover
                 newTime = DateTime.Now;
                 int jd = 0;
                 jd = get_real_time_angle();
-                WormLogger.Log("INFO: (OpenRead) current position " + jd + " ...");
+                tl.LogMessage("WormUtility", "INFO: (OpenRead) current position " + jd + " ...");
 
                 Configuration appConf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 appConf.AppSettings.Settings["angle"].Value = jd.ToString();
@@ -418,7 +422,7 @@ namespace ASCOM.WormFlatPanelCover
                     }
                     catch (TimeoutException)
                     {
-                        WormLogger.Log("ERROR: (OpenRead) checkpoint #1, invalid serial port.");
+                        tl.LogMessage("WormUtility", "ERROR: (OpenRead) checkpoint #1, invalid serial port.");
                         serial_port.Close();
                     }
 
@@ -438,7 +442,7 @@ namespace ASCOM.WormFlatPanelCover
                     }
                     catch (TimeoutException)
                     {
-                        WormLogger.Log("ERROR: (OpenRead) checkpoint #2, invalid serial port.");
+                        tl.LogMessage("WormUtility", "ERROR: (OpenRead) checkpoint #2, invalid serial port.");
                         serial_port.Close();
                     }
                     break;
@@ -462,7 +466,7 @@ namespace ASCOM.WormFlatPanelCover
                 int jd = 0;
                 int jd_new = get_real_time_angle();
                 jd = jd_old + jd_new;
-                WormLogger.Log("INFO: (CloseRead) current position " + jd + " ...");
+                tl.LogMessage("WormUtility", "INFO: (CloseRead) current position " + jd + " ...");
 
                 Configuration appConf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
                 appConf.AppSettings.Settings["angle"].Value = jd.ToString();
@@ -490,7 +494,7 @@ namespace ASCOM.WormFlatPanelCover
                     }
                     catch (TimeoutException)
                     {
-                        WormLogger.Log("ERROR: (CloseRead) checkpoint #1, invalid serial port.");
+                        tl.LogMessage("WormUtility", "ERROR: (CloseRead) checkpoint #1, invalid serial port.");
                         serial_port.Close();
                     }
 
@@ -510,7 +514,7 @@ namespace ASCOM.WormFlatPanelCover
                     }
                     catch (TimeoutException)
                     {
-                        WormLogger.Log("ERROR: (CloseRead) checkpoint #2, invalid serial port.");
+                        tl.LogMessage("WormUtility", "ERROR: (CloseRead) checkpoint #2, invalid serial port.");
                         serial_port.Close();
                     }
                     break;
@@ -534,7 +538,7 @@ namespace ASCOM.WormFlatPanelCover
             }
             catch (TimeoutException)
             {
-                WormLogger.Log("ERROR: (CloseRead) checkpoint #2, invalid serial port.");
+                tl.LogMessage("WormUtility", "ERROR: (CloseRead) checkpoint #2, invalid serial port.");
                 serial_port.Close();
             }
             //
@@ -554,7 +558,7 @@ namespace ASCOM.WormFlatPanelCover
             }
             catch (TimeoutException)
             {
-                WormLogger.Log("ERROR: (CloseRead) checkpoint #3, invalid serial port.");
+                tl.LogMessage("WormUtility", "ERROR: (CloseRead) checkpoint #3, invalid serial port.");
                 serial_port.Close();
             }
 
@@ -563,17 +567,17 @@ namespace ASCOM.WormFlatPanelCover
 
         public void turnoff_flatpanel()
         {
-            WormLogger.Log("INFO: (turnoff_flatpanel) Turning off flat panel.");
+            tl.LogMessage("WormUtility", "INFO: (turnoff_flatpanel) Turning off flat panel.");
             flatpanel.TurnOff();
         }
         public void turnon_flatpanel_high()
         {
-            WormLogger.Log("INFO: (turnoff_flatpanel) Turning on flat panel with high brightness.");
+            tl.LogMessage("WormUtility", "INFO: (turnoff_flatpanel) Turning on flat panel with high brightness.");
             flatpanel.TurnOn(WormFlatPanelWrapper.BRIGHTNESS.HIGH);
         }
         public void turnon_flatpanel_low()
         {
-            WormLogger.Log("INFO: (turnoff_flatpanel) Turning on flat panel with low brightness.");
+            tl.LogMessage("WormUtility", "INFO: (turnoff_flatpanel) Turning on flat panel with low brightness.");
             flatpanel.TurnOn(WormFlatPanelWrapper.BRIGHTNESS.LOW);
         }
 

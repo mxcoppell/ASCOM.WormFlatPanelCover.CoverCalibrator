@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using ASCOM.Utilities;
 
 namespace ASCOM.WormFlatPanelCover
 {
@@ -11,25 +12,43 @@ namespace ASCOM.WormFlatPanelCover
     {
         public enum BRIGHTNESS { HIGH, LOW }
 
-        public static int device_handle = 0;
+        public int device_handle = 0;
         List<string> flatpanel_serial_numbers = new List<string>();
 
-        private string TargetSerialNumber { get; set; }
+        public string TargetSerialNumber { get; set; }
 
-        public WormFlatPanelWrapper(bool is_simulation = true)
+        public string[] SerialNumbers
         {
-            IsSimulation = is_simulation;
+            get { return flatpanel_serial_numbers.ToArray(); }
+        }
+
+        public WormFlatPanelWrapper(TraceLogger logger, bool is_simulation) : base(logger, true)
+        {
+            if (IsSimulation)
+                LogMessage("FlatPanel", "Simulation mode is ON.");
+
             TargetSerialNumber = "";
             GetSerialNumbers();
             device_handle = OpenDeviceHandle(TargetSerialNumber);
         }
-        /*
-        ~FlatPanelWrapper()
+        ~WormFlatPanelWrapper()
         {
-            if (device_handle != 0)
-                UsbRelayDeviceHelper.Close(device_handle);
+            if (!IsSimulation)
+            {
+                if (device_handle != 0)
+                    UsbRelayDeviceHelper.Close(device_handle);
+            }
         }
-        */
+
+        new bool Connect()
+        {
+            return true;
+        }
+        new bool Disconnect()
+        {
+            return true;
+        }
+
         public void GetSerialNumbers()
         {
             flatpanel_serial_numbers.Clear();
@@ -37,9 +56,9 @@ namespace ASCOM.WormFlatPanelCover
             if (IsSimulation)
             {
                 flatpanel_serial_numbers.Add("WormFlatPanel_#1");
-                WormLogger.Log(makeLogStr("Added usb relay device serial number (WormFlatPanel_#1)."), true);
+                LogMessage("FlatPanel", makeLogStr("Added usb relay device serial number (WormFlatPanel_#1)."));
                 flatpanel_serial_numbers.Add("WormFlatPanel_#2");
-                WormLogger.Log(makeLogStr("Added usb relay device serial number (WormFlatPanel_#2)."), true);
+                LogMessage("FlatPanel", makeLogStr("Added usb relay device serial number (WormFlatPanel_#2)."));
             }
             else
             {
@@ -52,7 +71,7 @@ namespace ASCOM.WormFlatPanelCover
                     while (usb_relay_it != null)
                     {
                         flatpanel_serial_numbers.Add(usb_relay_it.SerialNumber);
-                        WormLogger.Log(makeLogStr("Added usb relay device serial number (" + usb_relay_it.SerialNumber + ")."), true);
+                        LogMessage("FlatPanel", makeLogStr("Added usb relay device serial number (" + usb_relay_it.SerialNumber + ")."));
                         IntPtr next_it = usb_relay_it.Next;
                         usb_relay_it = (UsbRelayDeviceHelper.UsbRelayDeviceInfo)Marshal.PtrToStructure(
                             next_it, typeof(UsbRelayDeviceHelper.UsbRelayDeviceInfo));
@@ -64,7 +83,7 @@ namespace ASCOM.WormFlatPanelCover
             {
                 TargetSerialNumber = flatpanel_serial_numbers.First();
             }
-            WormLogger.Log(makeLogStr("Set default usb relay device serial number (" + TargetSerialNumber + ")."), true);
+            LogMessage("FlatPanel", makeLogStr("Set default usb relay device serial number (" + TargetSerialNumber + ")."));
         }
 
         public int OpenDeviceHandle(string serialnumber)
@@ -74,10 +93,10 @@ namespace ASCOM.WormFlatPanelCover
                 int retval = 1; //  dummy device handle
                 if (!IsSimulation)
                     retval = UsbRelayDeviceHelper.OpenWithSerialNumber(serialnumber, serialnumber.Length);
-                WormLogger.Log(makeLogStr("Got device handle (" + retval + ") with usb relay device serial number (" + serialnumber + ")."), true);
+                LogMessage("FlatPanel", makeLogStr("Got device handle (" + retval + ") with usb relay device serial number (" + serialnumber + ")."));
                 return retval;
             }
-            WormLogger.Log(makeLogStr("Empty usb relay device serial number."), true);
+            LogMessage("FlatPanel", makeLogStr("Empty usb relay device serial number."));
             return 0;
         }
         public bool TurnOff()
@@ -86,38 +105,38 @@ namespace ASCOM.WormFlatPanelCover
             {
                 if (device_handle == 0)
                 {
-                    WormLogger.Log(makeLogStr("Invalid flat panel device handle."), true);
+                    LogMessage("FlatPanel", makeLogStr("Invalid flat panel device handle."));
                     return false;
                 }
 
                 UsbRelayDeviceHelper.CloseOneRelayChannel(device_handle, 1);
-                WormLogger.Log(makeLogStr("Flat panel Relay #1 closed."), true);
+                LogMessage("FlatPanel", makeLogStr("Flat panel Relay #1 closed."));
                 UsbRelayDeviceHelper.CloseOneRelayChannel(device_handle, 2);
-                WormLogger.Log(makeLogStr("Flat panel Relay #2 closed."), true);
+                LogMessage("FlatPanel", makeLogStr("Flat panel Relay #2 closed."));
             }
             else
             {
-                WormLogger.Log(makeLogStr("Flat panel Relay #1 closed."), true);
-                WormLogger.Log(makeLogStr("Flat panel Relay #2 closed."), true);
+                LogMessage("FlatPanel", makeLogStr("Flat panel Relay #1 closed."));
+                LogMessage("FlatPanel", makeLogStr("Flat panel Relay #2 closed."));
             }
-            WormLogger.Log(makeLogStr("Flat panel turned off."), true);
+            LogMessage("FlatPanel", makeLogStr("Flat panel turned off."));
             return true;
         }
 
         public bool TurnOn(BRIGHTNESS brightness)
         {
-            WormLogger.Log(makeLogStr("Turning on flat panel in mode: " + brightness), true);
+            LogMessage("FlatPanel", makeLogStr("Turning on flat panel in mode: " + brightness));
             if (IsSimulation)
             {
                 if (brightness == BRIGHTNESS.HIGH)
                 {
-                    WormLogger.Log(makeLogStr("Flat panel Relay #1 closed."), true);
-                    WormLogger.Log(makeLogStr("Flat panel Relay #2 opened."), true);
+                    LogMessage("FlatPanel", makeLogStr("Flat panel Relay #1 closed."));
+                    LogMessage("FlatPanel", makeLogStr("Flat panel Relay #2 opened."));
                 }
                 else if (brightness == BRIGHTNESS.LOW)
                 {
-                    WormLogger.Log(makeLogStr("Flat panel Relay #1 opened."), true);
-                    WormLogger.Log(makeLogStr("Flat panel Relay #2 closed."), true);
+                    LogMessage("FlatPanel", makeLogStr("Flat panel Relay #1 opened."));
+                    LogMessage("FlatPanel", makeLogStr("Flat panel Relay #2 closed."));
                 }
                 return true;
             }
@@ -125,7 +144,7 @@ namespace ASCOM.WormFlatPanelCover
             {
                 if (device_handle == 0)
                 {
-                    WormLogger.Log(makeLogStr("Invalid flat panel device handle."), true);
+                    LogMessage("FlatPanel", makeLogStr("Invalid flat panel device handle."));
                     return false;
                 }
 
@@ -136,13 +155,13 @@ namespace ASCOM.WormFlatPanelCover
                     switch (retval)
                     {
                         case 0:
-                            WormLogger.Log(makeLogStr("Flat panel Relay #1 closed."), true);
+                            LogMessage("FlatPanel", makeLogStr("Flat panel Relay #1 closed."));
                             break;
                         case 1:
-                            WormLogger.Log(makeLogStr("Error occured when closing Flat panel Relay #1."), true);
+                            LogMessage("FlatPanel", makeLogStr("Error occured when closing Flat panel Relay #1."));
                             return false;
                         case 2:
-                            WormLogger.Log(makeLogStr("'Index out of range' when closing Flat panel Relay #1."), true);
+                            LogMessage("FlatPanel", makeLogStr("'Index out of range' when closing Flat panel Relay #1."));
                             return false;
                     }
 
@@ -150,13 +169,13 @@ namespace ASCOM.WormFlatPanelCover
                     switch (retval)
                     {
                         case 0:
-                            WormLogger.Log(makeLogStr("Flat panel Relay #2 opened."), true);
+                            LogMessage("FlatPanel", makeLogStr("Flat panel Relay #2 opened."));
                             break;
                         case 1:
-                            WormLogger.Log(makeLogStr("Error occured when opening Flat panel Relay #2."), true);
+                            LogMessage("FlatPanel", makeLogStr("Error occured when opening Flat panel Relay #2."));
                             return false;
                         case 2:
-                            WormLogger.Log(makeLogStr("'Index out of range' when opening Flat panel Relay #2."), true);
+                            LogMessage("FlatPanel", makeLogStr("'Index out of range' when opening Flat panel Relay #2."));
                             return false;
                     }
 
@@ -167,13 +186,13 @@ namespace ASCOM.WormFlatPanelCover
                     switch (retval)
                     {
                         case 0:
-                            WormLogger.Log(makeLogStr("Flat panel Relay #1 opened."), true);
+                            LogMessage("FlatPanel", makeLogStr("Flat panel Relay #1 opened."));
                             break;
                         case 1:
-                            WormLogger.Log(makeLogStr("Error occured when opening Flat panel Relay #1."), true);
+                            LogMessage("FlatPanel", makeLogStr("Error occured when opening Flat panel Relay #1."));
                             return false;
                         case 2:
-                            WormLogger.Log(makeLogStr("'Index out of range' when opening Flat panel Relay #1."), true);
+                            LogMessage("FlatPanel", makeLogStr("'Index out of range' when opening Flat panel Relay #1."));
                             return false;
                     }
 
@@ -181,20 +200,18 @@ namespace ASCOM.WormFlatPanelCover
                     switch (retval)
                     {
                         case 0:
-                            WormLogger.Log(makeLogStr("Flat panel Relay #2 closed."), true);
+                            LogMessage("FlatPanel", makeLogStr("Flat panel Relay #2 closed."));
                             break;
                         case 1:
-                            WormLogger.Log(makeLogStr("Error occured when closing Flat panel Relay #2."), true);
+                            LogMessage("FlatPanel", makeLogStr("Error occured when closing Flat panel Relay #2."));
                             return false;
                         case 2:
-                            WormLogger.Log(makeLogStr("'Index out of range' when closing Flat panel Relay #2."), true);
+                            LogMessage("FlatPanel", makeLogStr("'Index out of range' when closing Flat panel Relay #2."));
                             return false;
                     }
                 }
                 return true;
             }
-
         }
-
     }
 }

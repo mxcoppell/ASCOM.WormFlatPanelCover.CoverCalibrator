@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO.Ports;
+﻿using System.IO.Ports;
+using ASCOM.Utilities;
 
 namespace ASCOM.WormFlatPanelCover
 {
@@ -18,11 +14,11 @@ namespace ASCOM.WormFlatPanelCover
 
         SerialPort serial_port = new SerialPort();
 
-        public WormSerialPortWrapper(bool is_simulation = true)
+        public WormSerialPortWrapper(TraceLogger logger, bool is_simulation) : base(logger, is_simulation)
         {
-            IsSimulation = is_simulation;
             if (IsSimulation)
             {
+                LogMessage("SerialPort", "Simulation mode is ON.");
                 PortNames = new string[] { "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8" };
             }
             else
@@ -30,10 +26,21 @@ namespace ASCOM.WormFlatPanelCover
                 PortNames = SerialPort.GetPortNames();
             }
         }
+
         ~WormSerialPortWrapper()
         {
             Close();
         }
+
+        new bool Connect()
+        {
+            return true;
+        }
+        new bool Disconnect()
+        {
+            return true;
+        }
+
         public string[] PortNames
         {
             get => port_names;
@@ -47,7 +54,7 @@ namespace ASCOM.WormFlatPanelCover
                 port_name = value;
                 if (!IsSimulation)
                     serial_port.PortName = port_name;
-                WormLogger.Log(makeLogStr("Port name set: " + PortName), true);
+                LogMessage("SerialPort", makeLogStr("Port name set: " + PortName));
             }
         }
         public int BaudRate
@@ -58,7 +65,7 @@ namespace ASCOM.WormFlatPanelCover
                 baud_rate = value;
                 if (!IsSimulation)
                     serial_port.BaudRate = baud_rate;
-                WormLogger.Log(makeLogStr("Baudrate set: " + BaudRate), true);
+                LogMessage("SerialPort", makeLogStr("Baudrate set: " + BaudRate));
             }
         }
         public int ReadTimeout
@@ -69,7 +76,7 @@ namespace ASCOM.WormFlatPanelCover
                 read_timeout = value;
                 if (!IsSimulation)
                     serial_port.ReadTimeout = read_timeout;
-                WormLogger.Log(makeLogStr("Readtimeout set: " + read_timeout), true);
+                LogMessage("SerialPort", makeLogStr("Readtimeout set: " + read_timeout));
             }
         }
         public bool IsOpen
@@ -77,7 +84,7 @@ namespace ASCOM.WormFlatPanelCover
             get
             {
                 bool retval = IsSimulation ? sim_opened : serial_port.IsOpen;
-                WormLogger.Log(makeLogStr("Serial port open status: " + retval), true);
+                LogMessage("SerialPort", makeLogStr("Serial port open status: " + retval));
                 return retval;
             }
         }
@@ -88,7 +95,7 @@ namespace ASCOM.WormFlatPanelCover
                 sim_opened = true;
             else
                 serial_port.Open();
-            WormLogger.Log(makeLogStr("Serial port opened."), true);
+            LogMessage("SerialPort", makeLogStr("Serial port opened."));
         }
         public void Close()
         {
@@ -96,19 +103,19 @@ namespace ASCOM.WormFlatPanelCover
                 sim_opened = false;
             else
                 serial_port.Close();
-            WormLogger.Log(makeLogStr("Serial port closed."), true);
+            LogMessage("SerialPort", makeLogStr("Serial port closed."));
         }
         public void DiscardInBuffer()
         {
             if (!IsSimulation)
                 serial_port.DiscardInBuffer();
-            WormLogger.Log(makeLogStr("Serial port input buffer cleared."), true);
+            LogMessage("SerialPort", makeLogStr("Serial port input buffer cleared."));
         }
         public void DiscardOutBuffer()
         {
             if (!IsSimulation)
                 serial_port.DiscardOutBuffer();
-            WormLogger.Log(makeLogStr("Serial port output buffer cleared."), true);
+            LogMessage("SerialPort", makeLogStr("Serial port output buffer cleared."));
         }
 
         public void Write(byte[] buffer, int offset, int count)
@@ -117,7 +124,7 @@ namespace ASCOM.WormFlatPanelCover
             {
                 serial_port.Write(buffer, offset, count);
             }
-            WormLogger.Log(makeLogStr("TX >>> " + makeByteStr(buffer, count)), true);
+            LogMessage("SerialPort", makeLogStr("TX >>> " + makeByteStr(buffer, count)));
         }
         public int Read(byte[] buffer, int offset, int count)
         {
@@ -130,7 +137,7 @@ namespace ASCOM.WormFlatPanelCover
             {
                 serial_port.Read(buffer, offset, count);
             }
-            WormLogger.Log(makeLogStr("RX <<< " + makeByteStr(buffer, count)), true);
+            LogMessage("SerialPort", makeLogStr("RX <<< " + makeByteStr(buffer, count)));
             return 0;
         }
 
