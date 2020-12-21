@@ -1,0 +1,1409 @@
+Windows PowerShell
+Copyright (C) Microsoft Corporation. All rights reserved.
+
+Try the new cross-platform PowerShell https://aka.ms/pscore6
+
+PS C:\Users\dsmn> e:
+PS E:\> dir
+
+
+    Directory: E:\
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----       12/10/2020   6:23 AM                Planetary
+d-----       10/17/2020  10:11 AM                Software
+d-----        12/1/2020   6:19 AM                Temp
+d-----       12/11/2020  12:19 AM                voyager_data
+
+
+PS E:\> cd .\Software\
+PS E:\Software> dir
+
+
+    Directory: E:\Software
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+d-----       11/29/2020  11:24 PM                Acquisition
+d-----        10/6/2020   9:14 PM                Database
+d-----       10/23/2020   6:34 AM                Drivers
+d-----       10/17/2020  10:11 AM                Focuser
+d-----        12/4/2020  10:07 PM                Guiding
+d-----       11/30/2020   2:18 PM                Integration
+d-----       10/17/2020  10:11 AM                Planetary
+d-----       10/17/2020  10:10 AM                System
+d-----       12/13/2020  10:55 AM                Tools
+
+
+PS E:\Software> cd .\Tools\
+PS E:\Software\Tools> cd .\wormcover_cmdline\
+PS E:\Software\Tools\wormcover_cmdline> dir
+
+
+    Directory: E:\Software\Tools\wormcover_cmdline
+
+
+Mode                LastWriteTime         Length Name
+----                -------------         ------ ----
+-a----       12/13/2020  10:56 AM          13312 usb_relay_device.dll
+-a----       12/13/2020  10:56 AM          25600 wormcover_cmdline.exe
+-a----       12/13/2020  10:04 AM            391 wormcover_cmdline.exe.Config
+
+
+PS E:\Software\Tools\wormcover_cmdline> type .\wormcover_cmdline.exe.Config
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+  <appSettings>
+    <add key="timerON" value="false" />
+    <add key="COMport" value="COM7" />
+    <add key="angle" value="0" />
+    <add key="targetangle" value="520" />
+    <add key="starttime" value="18:00" />
+    <add key="closetime" value="06:00" />
+    <add key="Version1" value="0" />
+  </appSettings>
+</configuration>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline> .\wormcover_cmdline.exe status
+PS E:\Software\Tools\wormcover_cmdline> .\wormcover_cmdline.exe status console
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+        (GetSerialNumbers:55) SimMode[False] Added usb relay device serial number (BITFT).
+        (GetSerialNumbers:66) SimMode[False] Set default usb relay device serial number (BITFT).
+        (OpenDeviceHandle:76) SimMode[False] Got device handle (86453000) with usb relay device serial number (BITFT).
+WormCover Configuration/Status
+------------------------------
+     COM Port: COM7
+Current Angle: 0
+ Target Angle: 520
+        Speed: 200
+ Acceleration: 10
+---
+                  (IsOpen:80) SimMode[False] Serial port open status: False
+                (PortName:50) SimMode[False] Port name set: COM7
+                    (Open:91) SimMode[False] Serial port opened.
+                   (Close:99) SimMode[False] Serial port closed.
+                (PortName:50) SimMode[False] Port name set: COM7
+                (BaudRate:61) SimMode[False] Baudrate set: 9600
+                    (Open:91) SimMode[False] Serial port opened.
+             (ReadTimeout:72) SimMode[False] Readtimeout set: 1000
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 00 11
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+                  (Write:120) SimMode[False] TX >>> B0 62 00 00 00 FF 00 0F 05 25
+                   (Read:133) SimMode[False] RX <<< 61 11 00
+INFO: (open_serial_port) serial port connected.
+                  (IsOpen:80) SimMode[False] Serial port open status: True
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 03 14
+                   (Read:133) SimMode[False] RX <<< B0 11 00
+                   (Close:99) SimMode[False] Serial port closed.
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline> .\wormcover_cmdline.exe open console
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+        (GetSerialNumbers:55) SimMode[False] Added usb relay device serial number (BITFT).
+        (GetSerialNumbers:66) SimMode[False] Set default usb relay device serial number (BITFT).
+        (OpenDeviceHandle:76) SimMode[False] Got device handle (78129928) with usb relay device serial number (BITFT).
+WormCover Configuration/Status
+------------------------------
+     COM Port: COM7
+Current Angle: 0
+ Target Angle: 520
+        Speed: 200
+ Acceleration: 10
+---
+                  (IsOpen:80) SimMode[False] Serial port open status: False
+                (PortName:50) SimMode[False] Port name set: COM7
+                    (Open:91) SimMode[False] Serial port opened.
+                   (Close:99) SimMode[False] Serial port closed.
+                (PortName:50) SimMode[False] Port name set: COM7
+                (BaudRate:61) SimMode[False] Baudrate set: 9600
+                    (Open:91) SimMode[False] Serial port opened.
+             (ReadTimeout:72) SimMode[False] Readtimeout set: 1000
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 00 11
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+                  (Write:120) SimMode[False] TX >>> B0 62 00 00 00 FF 00 0F 05 25
+                   (Read:133) SimMode[False] RX <<< 61 11 00
+INFO: (open_serial_port) serial port connected.
+                  (IsOpen:80) SimMode[False] Serial port open status: True
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 03 14
+                   (Read:133) SimMode[False] RX <<< B0 11 00
+                  (IsOpen:80) SimMode[False] Serial port open status: True
+INFO: (open_cover) open worm cover...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 62 00 00 10 40 00 C8 0A 34
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 01 12
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 00 00 00 00 09 5D
+INFO: (OpenRead) curerent position 0 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 00 03 00 1B 09 7B
+INFO: (OpenRead) curerent position 0 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 00 11 00 99 09 07
+INFO: (OpenRead) curerent position 2 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 00 3A 00 C8 09 5F
+INFO: (OpenRead) curerent position 7 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 00 63 00 C8 09 88
+INFO: (OpenRead) curerent position 12 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 00 8B 00 C8 09 B0
+INFO: (OpenRead) curerent position 17 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 00 B5 00 C8 09 DA
+INFO: (OpenRead) curerent position 22 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 00 DE 00 C8 09 03
+INFO: (OpenRead) curerent position 27 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 01 07 00 C8 09 2D
+INFO: (OpenRead) curerent position 32 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 01 30 00 C8 09 56
+INFO: (OpenRead) curerent position 38 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 01 59 00 C8 09 7F
+INFO: (OpenRead) curerent position 43 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 01 83 00 C8 09 A9
+INFO: (OpenRead) curerent position 48 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 01 AC 00 C8 09 D2
+INFO: (OpenRead) curerent position 53 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 01 D6 00 C8 09 FC
+INFO: (OpenRead) curerent position 58 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 01 FE 00 C8 09 24
+INFO: (OpenRead) curerent position 63 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 02 27 00 C8 09 4E
+INFO: (OpenRead) curerent position 68 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 02 51 00 C8 09 78
+INFO: (OpenRead) curerent position 74 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 02 7A 00 C8 09 A1
+INFO: (OpenRead) curerent position 79 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 02 A4 00 C8 09 CB
+INFO: (OpenRead) curerent position 84 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 02 CE 00 C8 09 F5
+INFO: (OpenRead) curerent position 89 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 02 F8 00 C8 09 1F
+INFO: (OpenRead) curerent position 95 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 03 22 00 C8 09 4A
+INFO: (OpenRead) curerent position 100 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 03 4A 00 C8 09 72
+INFO: (OpenRead) curerent position 105 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 03 74 00 C8 09 9C
+INFO: (OpenRead) curerent position 110 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 03 9E 00 C8 09 C6
+INFO: (OpenRead) curerent position 115 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 03 C8 00 C8 09 F0
+INFO: (OpenRead) curerent position 121 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 03 F0 00 C8 09 18
+INFO: (OpenRead) curerent position 126 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 04 1A 00 C8 09 43
+INFO: (OpenRead) curerent position 131 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 04 44 00 C8 09 6D
+INFO: (OpenRead) curerent position 136 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 04 6E 00 C8 09 97
+INFO: (OpenRead) curerent position 141 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 04 98 00 C8 09 C1
+INFO: (OpenRead) curerent position 147 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 04 C2 00 C8 09 EB
+INFO: (OpenRead) curerent position 152 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 04 EB 00 C8 09 14
+INFO: (OpenRead) curerent position 157 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 05 14 00 C8 09 3E
+INFO: (OpenRead) curerent position 162 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 05 3D 00 C8 09 67
+INFO: (OpenRead) curerent position 167 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 05 66 00 C8 09 90
+INFO: (OpenRead) curerent position 172 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 05 8E 00 C8 09 B8
+INFO: (OpenRead) curerent position 177 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 05 B7 00 C8 09 E1
+INFO: (OpenRead) curerent position 182 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 05 DF 00 C8 09 09
+INFO: (OpenRead) curerent position 187 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 06 08 00 C8 09 33
+INFO: (OpenRead) curerent position 193 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 06 31 00 C8 09 5C
+INFO: (OpenRead) curerent position 198 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 06 5A 00 C8 09 85
+INFO: (OpenRead) curerent position 203 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 06 84 00 C8 09 AF
+INFO: (OpenRead) curerent position 208 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 06 AE 00 C8 09 D9
+INFO: (OpenRead) curerent position 213 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 06 D7 00 C8 09 02
+INFO: (OpenRead) curerent position 218 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 07 01 00 C8 09 2D
+INFO: (OpenRead) curerent position 224 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 07 29 00 C8 09 55
+INFO: (OpenRead) curerent position 229 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 07 53 00 C8 09 7F
+INFO: (OpenRead) curerent position 234 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 07 7D 00 C8 09 A9
+INFO: (OpenRead) curerent position 239 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 07 A7 00 C8 09 D3
+INFO: (OpenRead) curerent position 244 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 07 D1 00 C8 09 FD
+INFO: (OpenRead) curerent position 250 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 07 FA 00 C8 09 26
+INFO: (OpenRead) curerent position 255 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 08 23 00 C8 09 50
+INFO: (OpenRead) curerent position 260 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 08 4C 00 C8 09 79
+INFO: (OpenRead) curerent position 265 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 08 75 00 C8 09 A2
+INFO: (OpenRead) curerent position 270 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 08 9D 00 C8 09 CA
+INFO: (OpenRead) curerent position 275 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 08 C7 00 C8 09 F4
+INFO: (OpenRead) curerent position 280 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 08 F1 00 C8 09 1E
+INFO: (OpenRead) curerent position 286 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 09 1B 00 C8 09 49
+INFO: (OpenRead) curerent position 291 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 09 45 00 C8 09 73
+INFO: (OpenRead) curerent position 296 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 09 6F 00 C8 09 9D
+INFO: (OpenRead) curerent position 301 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 09 98 00 C8 09 C6
+INFO: (OpenRead) curerent position 307 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 09 C1 00 C8 09 EF
+INFO: (OpenRead) curerent position 312 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 09 EA 00 C8 09 18
+INFO: (OpenRead) curerent position 317 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0A 13 00 C8 09 42
+INFO: (OpenRead) curerent position 322 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0A 3B 00 C8 09 6A
+INFO: (OpenRead) curerent position 327 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0A 64 00 C8 09 93
+INFO: (OpenRead) curerent position 332 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0A 8E 00 C8 09 BD
+INFO: (OpenRead) curerent position 337 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0A B7 00 C8 09 E6
+INFO: (OpenRead) curerent position 342 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0A E0 00 C8 09 0F
+INFO: (OpenRead) curerent position 348 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0B 09 00 C8 09 39
+INFO: (OpenRead) curerent position 353 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0B 32 00 C8 09 62
+INFO: (OpenRead) curerent position 358 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0B 5B 00 C8 09 8B
+INFO: (OpenRead) curerent position 363 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0B 85 00 C8 09 B5
+INFO: (OpenRead) curerent position 368 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0B AD 00 C8 09 DD
+INFO: (OpenRead) curerent position 373 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0B D8 00 C8 09 08
+INFO: (OpenRead) curerent position 379 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0C 00 00 C8 09 31
+INFO: (OpenRead) curerent position 384 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0C 2A 00 C8 09 5B
+INFO: (OpenRead) curerent position 389 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0C 54 00 C8 09 85
+INFO: (OpenRead) curerent position 394 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0C 7D 00 C8 09 AE
+INFO: (OpenRead) curerent position 399 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0C A6 00 C8 09 D7
+INFO: (OpenRead) curerent position 404 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0C CF 00 C8 09 00
+INFO: (OpenRead) curerent position 409 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0C F8 00 C8 09 29
+INFO: (OpenRead) curerent position 415 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0D 22 00 C8 09 54
+INFO: (OpenRead) curerent position 420 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0D 4B 00 C8 09 7D
+INFO: (OpenRead) curerent position 425 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0D 73 00 C8 09 A5
+INFO: (OpenRead) curerent position 430 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0D 9C 00 C8 09 CE
+INFO: (OpenRead) curerent position 435 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0D C6 00 C8 09 F8
+INFO: (OpenRead) curerent position 440 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0D F0 00 C8 09 22
+INFO: (OpenRead) curerent position 446 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0E 19 00 C8 09 4C
+INFO: (OpenRead) curerent position 451 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0E 43 00 C8 09 76
+INFO: (OpenRead) curerent position 456 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0E 6C 00 C8 09 9F
+INFO: (OpenRead) curerent position 461 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0E 96 00 C8 09 C9
+INFO: (OpenRead) curerent position 466 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0E BF 00 C8 09 F2
+INFO: (OpenRead) curerent position 471 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0E E8 00 C8 09 1B
+INFO: (OpenRead) curerent position 477 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0F 11 00 C8 09 45
+INFO: (OpenRead) curerent position 482 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0F 3A 00 C8 09 6E
+INFO: (OpenRead) curerent position 487 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0F 63 00 C8 09 97
+INFO: (OpenRead) curerent position 492 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0F 8D 00 C8 09 C1
+INFO: (OpenRead) curerent position 497 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0F B5 00 C8 09 E9
+INFO: (OpenRead) curerent position 502 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 0F DF 00 C8 09 13
+INFO: (OpenRead) curerent position 507 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 10 0A 00 C8 09 3F
+INFO: (OpenRead) curerent position 513 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 10 31 00 80 09 1E
+INFO: (OpenRead) curerent position 518 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 10 3D 00 14 09 BE
+INFO: (OpenRead) curerent position 519 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 00 00 10 40 00 00 09 AD
+INFO: (OpenRead) curerent position 520 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 03 14
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 03 00 00 10 40 00 00 09 AF
+                   (Close:99) SimMode[False] Serial port closed.
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline> .\wormcover_cmdline.exe high console
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+        (GetSerialNumbers:55) SimMode[False] Added usb relay device serial number (BITFT).
+        (GetSerialNumbers:66) SimMode[False] Set default usb relay device serial number (BITFT).
+        (OpenDeviceHandle:76) SimMode[False] Got device handle (85273352) with usb relay device serial number (BITFT).
+WormCover Configuration/Status
+------------------------------
+     COM Port: COM7
+Current Angle: 520
+ Target Angle: 520
+        Speed: 200
+ Acceleration: 10
+---
+                  (IsOpen:80) SimMode[False] Serial port open status: False
+                (PortName:50) SimMode[False] Port name set: COM7
+                    (Open:91) SimMode[False] Serial port opened.
+                   (Close:99) SimMode[False] Serial port closed.
+                (PortName:50) SimMode[False] Port name set: COM7
+                (BaudRate:61) SimMode[False] Baudrate set: 9600
+                    (Open:91) SimMode[False] Serial port opened.
+             (ReadTimeout:72) SimMode[False] Readtimeout set: 1000
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 00 11
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+                  (Write:120) SimMode[False] TX >>> B0 62 00 00 00 FF 00 0F 05 25
+                   (Read:133) SimMode[False] RX <<< 61 11 00
+INFO: (open_serial_port) serial port connected.
+                  (IsOpen:80) SimMode[False] Serial port open status: True
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 03 14
+                   (Read:133) SimMode[False] RX <<< B0 11 00
+INFO: (turnoff_flatpanel) Turning on flat panel with high brightness.
+                 (TurnOn:108) SimMode[False] Turning on flat panel in mode: HIGH
+                 (TurnOn:138) SimMode[False] Flat panel Relay #1 closed.
+                 (TurnOn:152) SimMode[False] Flat panel Relay #2 opened.
+                   (Close:99) SimMode[False] Serial port closed.
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline> .\wormcover_cmdline.exe low console
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+        (GetSerialNumbers:55) SimMode[False] Added usb relay device serial number (BITFT).
+        (GetSerialNumbers:66) SimMode[False] Set default usb relay device serial number (BITFT).
+        (OpenDeviceHandle:76) SimMode[False] Got device handle (79702792) with usb relay device serial number (BITFT).
+WormCover Configuration/Status
+------------------------------
+     COM Port: COM7
+Current Angle: 520
+ Target Angle: 520
+        Speed: 200
+ Acceleration: 10
+---
+                  (IsOpen:80) SimMode[False] Serial port open status: False
+                (PortName:50) SimMode[False] Port name set: COM7
+                    (Open:91) SimMode[False] Serial port opened.
+                   (Close:99) SimMode[False] Serial port closed.
+                (PortName:50) SimMode[False] Port name set: COM7
+                (BaudRate:61) SimMode[False] Baudrate set: 9600
+                    (Open:91) SimMode[False] Serial port opened.
+             (ReadTimeout:72) SimMode[False] Readtimeout set: 1000
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 00 11
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+                  (Write:120) SimMode[False] TX >>> B0 62 00 00 00 FF 00 0F 05 25
+                   (Read:133) SimMode[False] RX <<< 61 11 00
+INFO: (open_serial_port) serial port connected.
+                  (IsOpen:80) SimMode[False] Serial port open status: True
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 03 14
+                   (Read:133) SimMode[False] RX <<< B0 11 00
+INFO: (turnoff_flatpanel) Turning on flat panel with low brightness.
+                 (TurnOn:108) SimMode[False] Turning on flat panel in mode: LOW
+                 (TurnOn:169) SimMode[False] Flat panel Relay #1 opened.
+                 (TurnOn:183) SimMode[False] Flat panel Relay #2 closed.
+                   (Close:99) SimMode[False] Serial port closed.
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline> .\wormcover_cmdline.exe off console
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+        (GetSerialNumbers:55) SimMode[False] Added usb relay device serial number (BITFT).
+        (GetSerialNumbers:66) SimMode[False] Set default usb relay device serial number (BITFT).
+        (OpenDeviceHandle:76) SimMode[False] Got device handle (79702792) with usb relay device serial number (BITFT).
+WormCover Configuration/Status
+------------------------------
+     COM Port: COM7
+Current Angle: 520
+ Target Angle: 520
+        Speed: 200
+ Acceleration: 10
+---
+                  (IsOpen:80) SimMode[False] Serial port open status: False
+                (PortName:50) SimMode[False] Port name set: COM7
+                    (Open:91) SimMode[False] Serial port opened.
+                   (Close:99) SimMode[False] Serial port closed.
+                (PortName:50) SimMode[False] Port name set: COM7
+                (BaudRate:61) SimMode[False] Baudrate set: 9600
+                    (Open:91) SimMode[False] Serial port opened.
+             (ReadTimeout:72) SimMode[False] Readtimeout set: 1000
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 00 11
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+                  (Write:120) SimMode[False] TX >>> B0 62 00 00 00 FF 00 0F 05 25
+                   (Read:133) SimMode[False] RX <<< 61 11 00
+INFO: (open_serial_port) serial port connected.
+                  (IsOpen:80) SimMode[False] Serial port open status: True
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 03 14
+                   (Read:133) SimMode[False] RX <<< B0 11 00
+INFO: (turnoff_flatpanel) Turning off flat panel.
+                 (TurnOff:93) SimMode[False] Flat panel Relay #1 closed.
+                 (TurnOff:95) SimMode[False] Flat panel Relay #2 closed.
+                (TurnOff:102) SimMode[False] Flat panel turned off.
+                   (Close:99) SimMode[False] Serial port closed.
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline> .\wormcover_cmdline.exe close console
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+            (IsSimulation:23) SimMode[False] Simulation mode set.
+        (GetSerialNumbers:55) SimMode[False] Added usb relay device serial number (BITFT).
+        (GetSerialNumbers:66) SimMode[False] Set default usb relay device serial number (BITFT).
+        (OpenDeviceHandle:76) SimMode[False] Got device handle (91040520) with usb relay device serial number (BITFT).
+WormCover Configuration/Status
+------------------------------
+     COM Port: COM7
+Current Angle: 520
+ Target Angle: 520
+        Speed: 200
+ Acceleration: 10
+---
+                  (IsOpen:80) SimMode[False] Serial port open status: False
+                (PortName:50) SimMode[False] Port name set: COM7
+                    (Open:91) SimMode[False] Serial port opened.
+                   (Close:99) SimMode[False] Serial port closed.
+                (PortName:50) SimMode[False] Port name set: COM7
+                (BaudRate:61) SimMode[False] Baudrate set: 9600
+                    (Open:91) SimMode[False] Serial port opened.
+             (ReadTimeout:72) SimMode[False] Readtimeout set: 1000
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 00 11
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+                  (Write:120) SimMode[False] TX >>> B0 62 00 00 00 FF 00 0F 05 25
+                   (Read:133) SimMode[False] RX <<< 61 11 00
+INFO: (open_serial_port) serial port connected.
+                  (IsOpen:80) SimMode[False] Serial port open status: True
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 03 14
+                   (Read:133) SimMode[False] RX <<< B0 11 00
+                  (IsOpen:80) SimMode[False] Serial port open status: True
+INFO: (close_cove) close worm cover...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 62 FF FF EF C0 00 C8 0A 91
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 01 12
+                   (Read:133) SimMode[False] RX <<< 62 00 00
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FF FF 00 09 09 62
+INFO: (CloseRead) curerent position 520 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FF FB 00 2D 09 82
+INFO: (CloseRead) curerent position 520 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FF E6 00 C8 09 08
+INFO: (CloseRead) curerent position 517 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FF BD 00 C8 09 DF
+INFO: (CloseRead) curerent position 512 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FF 93 00 C8 09 B5
+INFO: (CloseRead) curerent position 507 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FF 6A 00 C8 09 8C
+INFO: (CloseRead) curerent position 502 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FF 40 00 C8 09 62
+INFO: (CloseRead) curerent position 496 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FF 18 00 C8 09 3A
+INFO: (CloseRead) curerent position 491 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FE EF 00 C8 09 10
+INFO: (CloseRead) curerent position 486 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FE C6 00 C8 09 E7
+INFO: (CloseRead) curerent position 481 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FE 9C 00 C8 09 BD
+INFO: (CloseRead) curerent position 476 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FE 72 00 C8 09 93
+INFO: (CloseRead) curerent position 471 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FE 48 00 C8 09 69
+INFO: (CloseRead) curerent position 465 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FE 1F 00 C8 09 40
+INFO: (CloseRead) curerent position 460 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FD F7 00 C8 09 17
+INFO: (CloseRead) curerent position 455 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FD CD 00 C8 09 ED
+INFO: (CloseRead) curerent position 450 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FD A2 00 C8 09 C2
+INFO: (CloseRead) curerent position 445 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FD 78 00 C8 09 98
+INFO: (CloseRead) curerent position 439 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FD 4E 00 C8 09 6E
+INFO: (CloseRead) curerent position 434 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FD 24 00 C8 09 44
+INFO: (CloseRead) curerent position 429 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FC FB 00 C8 09 1A
+INFO: (CloseRead) curerent position 424 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FC D2 00 C8 09 F1
+INFO: (CloseRead) curerent position 419 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FC AA 00 C8 09 C9
+INFO: (CloseRead) curerent position 414 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FC 7F 00 C8 09 9E
+INFO: (CloseRead) curerent position 408 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FC 57 00 C8 09 76
+INFO: (CloseRead) curerent position 403 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FC 2D 00 C8 09 4C
+INFO: (CloseRead) curerent position 398 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FC 04 00 C8 09 23
+INFO: (CloseRead) curerent position 393 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FB DA 00 C8 09 F8
+INFO: (CloseRead) curerent position 388 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FB B1 00 C8 09 CF
+INFO: (CloseRead) curerent position 383 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FB 88 00 C8 09 A6
+INFO: (CloseRead) curerent position 377 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FB 5E 00 C8 09 7C
+INFO: (CloseRead) curerent position 372 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FB 36 00 C8 09 54
+INFO: (CloseRead) curerent position 367 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FB 0C 00 C8 09 2A
+INFO: (CloseRead) curerent position 362 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FA E3 00 C8 09 00
+INFO: (CloseRead) curerent position 357 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FA B9 00 C8 09 D6
+INFO: (CloseRead) curerent position 352 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FA 90 00 C8 09 AD
+INFO: (CloseRead) curerent position 346 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FA 67 00 C8 09 84
+INFO: (CloseRead) curerent position 341 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FA 3F 00 C8 09 5C
+INFO: (CloseRead) curerent position 336 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF FA 15 00 C8 09 32
+INFO: (CloseRead) curerent position 331 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F9 EB 00 C8 09 07
+INFO: (CloseRead) curerent position 326 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F9 C3 00 C8 09 DF
+INFO: (CloseRead) curerent position 321 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F9 9A 00 C8 09 B6
+INFO: (CloseRead) curerent position 316 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F9 71 00 C8 09 8D
+INFO: (CloseRead) curerent position 311 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F9 47 00 C8 09 63
+INFO: (CloseRead) curerent position 305 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F9 1E 00 C8 09 3A
+INFO: (CloseRead) curerent position 300 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F8 F4 00 C8 09 0F
+INFO: (CloseRead) curerent position 295 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F8 C9 00 C8 09 E4
+INFO: (CloseRead) curerent position 290 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F8 A0 00 C8 09 BB
+INFO: (CloseRead) curerent position 284 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F8 76 00 C8 09 91
+INFO: (CloseRead) curerent position 279 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F8 4D 00 C8 09 68
+INFO: (CloseRead) curerent position 274 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F8 23 00 C8 09 3E
+INFO: (CloseRead) curerent position 269 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F7 F9 00 C8 09 13
+INFO: (CloseRead) curerent position 264 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F7 D1 00 C8 09 EB
+INFO: (CloseRead) curerent position 259 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F7 A8 00 C8 09 C2
+INFO: (CloseRead) curerent position 253 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F7 7F 00 C8 09 99
+INFO: (CloseRead) curerent position 248 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F7 56 00 C8 09 70
+INFO: (CloseRead) curerent position 243 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F7 2D 00 C8 09 47
+INFO: (CloseRead) curerent position 238 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F7 03 00 C8 09 1D
+INFO: (CloseRead) curerent position 233 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F6 D9 00 C8 09 F2
+INFO: (CloseRead) curerent position 228 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F6 B0 00 C8 09 C9
+INFO: (CloseRead) curerent position 222 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F6 87 00 C8 09 A0
+INFO: (CloseRead) curerent position 217 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F6 5E 00 C8 09 77
+INFO: (CloseRead) curerent position 212 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F6 36 00 C8 09 4F
+INFO: (CloseRead) curerent position 207 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F6 0C 00 C8 09 25
+INFO: (CloseRead) curerent position 202 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F5 E3 00 C8 09 FB
+INFO: (CloseRead) curerent position 197 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F5 B9 00 C8 09 D1
+INFO: (CloseRead) curerent position 192 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F5 90 00 C8 09 A8
+INFO: (CloseRead) curerent position 186 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F5 66 00 C8 09 7E
+INFO: (CloseRead) curerent position 181 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F5 3D 00 C8 09 55
+INFO: (CloseRead) curerent position 176 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F5 14 00 C8 09 2C
+INFO: (CloseRead) curerent position 171 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F4 EA 00 C8 09 01
+INFO: (CloseRead) curerent position 166 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F4 C1 00 C8 09 D8
+INFO: (CloseRead) curerent position 161 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F4 98 00 C8 09 AF
+INFO: (CloseRead) curerent position 155 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F4 6E 00 C8 09 85
+INFO: (CloseRead) curerent position 150 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F4 45 00 C8 09 5C
+INFO: (CloseRead) curerent position 145 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F4 1C 00 C8 09 33
+INFO: (CloseRead) curerent position 140 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F3 F3 00 C8 09 09
+INFO: (CloseRead) curerent position 135 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F3 CB 00 C8 09 E1
+INFO: (CloseRead) curerent position 130 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F3 A2 00 C8 09 B8
+INFO: (CloseRead) curerent position 125 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F3 77 00 C8 09 8D
+INFO: (CloseRead) curerent position 119 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F3 4E 00 C8 09 64
+INFO: (CloseRead) curerent position 114 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F3 24 00 C8 09 3A
+INFO: (CloseRead) curerent position 109 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F2 FB 00 C8 09 10
+INFO: (CloseRead) curerent position 104 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F2 D1 00 C8 09 E6
+INFO: (CloseRead) curerent position 99 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F2 A8 00 C8 09 BD
+INFO: (CloseRead) curerent position 93 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F2 7E 00 C8 09 93
+INFO: (CloseRead) curerent position 88 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F2 55 00 C8 09 6A
+INFO: (CloseRead) curerent position 83 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F2 2C 00 C8 09 41
+INFO: (CloseRead) curerent position 78 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F2 04 00 C8 09 19
+INFO: (CloseRead) curerent position 73 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F1 DB 00 C8 09 EF
+INFO: (CloseRead) curerent position 68 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F1 B2 00 C8 09 C6
+INFO: (CloseRead) curerent position 63 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F1 8A 00 C8 09 9E
+INFO: (CloseRead) curerent position 58 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F1 61 00 C8 09 75
+INFO: (CloseRead) curerent position 53 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F1 39 00 C8 09 4D
+INFO: (CloseRead) curerent position 48 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F1 10 00 C8 09 24
+INFO: (CloseRead) curerent position 42 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F0 E7 00 C8 09 FA
+INFO: (CloseRead) curerent position 37 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F0 BE 00 C8 09 D1
+INFO: (CloseRead) curerent position 32 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F0 95 00 C8 09 A8
+INFO: (CloseRead) curerent position 27 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F0 6A 00 C8 09 7D
+INFO: (CloseRead) curerent position 22 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F0 41 00 C8 09 54
+INFO: (CloseRead) curerent position 17 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF F0 18 00 C8 09 2B
+INFO: (CloseRead) curerent position 11 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF EF F0 00 C8 09 02
+INFO: (CloseRead) curerent position 6 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF EF CC 00 65 09 7B
+INFO: (CloseRead) curerent position 2 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF EF C2 00 0B 09 17
+INFO: (CloseRead) curerent position 1 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 63 13
+                   (Read:133) SimMode[False] RX <<< B0 A3 01 FF FF EF C0 00 00 09 0A
+INFO: (CloseRead) curerent position 0 ...
+        (DiscardInBuffer:105) SimMode[False] Serial port input buffer cleared.
+       (DiscardOutBuffer:111) SimMode[False] Serial port output buffer cleared.
+                  (Write:120) SimMode[False] TX >>> B0 61 03 14
+                   (Read:133) SimMode[False] RX <<< B0 00 00
+                   (Close:99) SimMode[False] Serial port closed.
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
+PS E:\Software\Tools\wormcover_cmdline>
