@@ -199,7 +199,6 @@ namespace ASCOM.WormFlatPanelCover
         private void threadWaitForCoverOpenCompletion()
         {
             DateTime start_time = DateTime.Now;
-            MethodInvoker m;
             while (true)
             {
                 int rt_angle = driver.cover.getCoverRealtimeAngle();
@@ -241,7 +240,6 @@ namespace ASCOM.WormFlatPanelCover
         private void threadWaitForCoverCloseCompletion()
         {
             DateTime start_time = DateTime.Now;
-            MethodInvoker m;
             while (true)
             {
                 int rt_angle = driver.targetAngle + driver.cover.getCoverRealtimeAngle();

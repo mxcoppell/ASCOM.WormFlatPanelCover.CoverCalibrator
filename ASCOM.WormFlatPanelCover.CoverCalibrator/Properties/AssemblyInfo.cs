@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 //
 // TODO - Add your authorship information here
 [assembly: AssemblyTitle("ASCOM.WormFlatPanelCover.CoverCalibrator")]
-[assembly: AssemblyDescription("虫子电动平场镜头盖")]
+[assembly: AssemblyDescription("虫子电动平场镜头盖 ASCOMM设备驱动程序")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("虫子出品")]
 [assembly: AssemblyProduct("虫子电动平场镜头盖")]
