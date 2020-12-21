@@ -242,7 +242,7 @@ namespace ASCOM.WormFlatPanelCover
             this.button_OpenCover.TabIndex = 5;
             this.button_OpenCover.Text = "打开镜头盖";
             this.button_OpenCover.UseVisualStyleBackColor = false;
-            this.button_OpenCover.Click += new System.EventHandler(this.button_CoverOperation_Click);
+            this.button_OpenCover.Click += new System.EventHandler(this.button_OpenCover_Click);
             // 
             // textBox_CoverMoveSpeed
             // 
@@ -253,6 +253,7 @@ namespace ASCOM.WormFlatPanelCover
             this.textBox_CoverMoveSpeed.Size = new System.Drawing.Size(75, 27);
             this.textBox_CoverMoveSpeed.TabIndex = 3;
             this.textBox_CoverMoveSpeed.Text = "101";
+            this.textBox_CoverMoveSpeed.TextChanged += new System.EventHandler(this.textBox_CoverMoveSpeed_TextChanged);
             // 
             // textBox_CoverAcceleration
             // 
@@ -310,7 +311,6 @@ namespace ASCOM.WormFlatPanelCover
             this.label_CurrentAngleValue.TabIndex = 10;
             this.label_CurrentAngleValue.Text = "61";
             this.label_CurrentAngleValue.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label_CurrentAngleValue.Click += new System.EventHandler(this.label_CurrentAngleValue_Click);
             // 
             // panel3
             // 
@@ -328,14 +328,16 @@ namespace ASCOM.WormFlatPanelCover
             // 
             // button_FlatPanelLow
             // 
+            this.button_FlatPanelLow.BackColor = System.Drawing.SystemColors.ControlDark;
             this.button_FlatPanelLow.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_FlatPanelLow.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.button_FlatPanelLow.Location = new System.Drawing.Point(272, 52);
             this.button_FlatPanelLow.Margin = new System.Windows.Forms.Padding(2);
             this.button_FlatPanelLow.Name = "button_FlatPanelLow";
             this.button_FlatPanelLow.Size = new System.Drawing.Size(115, 34);
             this.button_FlatPanelLow.TabIndex = 10;
             this.button_FlatPanelLow.Text = "平场弱光";
-            this.button_FlatPanelLow.UseVisualStyleBackColor = true;
+            this.button_FlatPanelLow.UseVisualStyleBackColor = false;
             this.button_FlatPanelLow.Click += new System.EventHandler(this.button_FlatPanelLow_Click);
             // 
             // comboBox_FlatPanels
@@ -347,6 +349,7 @@ namespace ASCOM.WormFlatPanelCover
             this.comboBox_FlatPanels.Name = "comboBox_FlatPanels";
             this.comboBox_FlatPanels.Size = new System.Drawing.Size(275, 28);
             this.comboBox_FlatPanels.TabIndex = 7;
+            this.comboBox_FlatPanels.SelectedIndexChanged += new System.EventHandler(this.comboBox_FlatPanels_SelectedIndexChanged);
             // 
             // label_FlatPanels
             // 
@@ -363,6 +366,7 @@ namespace ASCOM.WormFlatPanelCover
             // 
             this.button_FlatPanelHigh.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             this.button_FlatPanelHigh.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button_FlatPanelHigh.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
             this.button_FlatPanelHigh.Location = new System.Drawing.Point(20, 52);
             this.button_FlatPanelHigh.Margin = new System.Windows.Forms.Padding(2);
             this.button_FlatPanelHigh.Name = "button_FlatPanelHigh";
@@ -375,8 +379,9 @@ namespace ASCOM.WormFlatPanelCover
             // button_FlatPanelOff
             // 
             this.button_FlatPanelOff.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.button_FlatPanelOff.Enabled = false;
             this.button_FlatPanelOff.Font = new System.Drawing.Font("Microsoft YaHei UI", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button_FlatPanelOff.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.button_FlatPanelOff.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.button_FlatPanelOff.Location = new System.Drawing.Point(146, 52);
             this.button_FlatPanelOff.Margin = new System.Windows.Forms.Padding(2);
             this.button_FlatPanelOff.Name = "button_FlatPanelOff";

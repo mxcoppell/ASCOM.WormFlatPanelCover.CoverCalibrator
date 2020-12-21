@@ -14,6 +14,8 @@ namespace ASCOM.WormFlatPanelCover
 
         SerialPort serial_port = new SerialPort();
 
+        SimMotorResponder sim_motor = new SimMotorResponder();
+
         public WormSerialPortWrapper(CoverCalibrator drv, bool is_simulation) : base(drv, is_simulation)
         {
             if (IsSimulation)
@@ -25,6 +27,7 @@ namespace ASCOM.WormFlatPanelCover
             {
                 PortNames = SerialPort.GetPortNames();
             }
+            LogMessage("SerialPort", "Available COM ports: {0}", string.Join(",", PortNames));
         }
 
         ~WormSerialPortWrapper()
@@ -35,7 +38,7 @@ namespace ASCOM.WormFlatPanelCover
         public new bool Disconnect()
         {
             if (serial_port.IsOpen) serial_port.Close();
-            LogMessage("Serial Port", "INFO: (Disconnect) Serial port closed. ({0}))", Driver.comPort);
+            LogMessage("Serial Port", "INFO: (Disconnect) Serial port closed. ({0})", Driver.comPort);
             return true;
         }
 
@@ -90,7 +93,15 @@ namespace ASCOM.WormFlatPanelCover
         public void Open()
         {
             if (IsSimulation)
-                sim_opened = true;
+            {
+                if (PortName == "COM4")
+                {
+                    sim_opened = false;
+                    throw new System.IO.IOException();
+                }
+                else
+                    sim_opened = true;
+            }
             else
                 serial_port.Open();
             LogMessage("SerialPort", "Serial port opened.");
@@ -122,14 +133,20 @@ namespace ASCOM.WormFlatPanelCover
             {
                 serial_port.Write(buffer, offset, count);
             }
+            else
+            {
+                byte[] req_data = new byte[count];
+                System.Array.Copy(buffer, req_data, count);
+                sim_motor.setLastRequest(req_data);
+            }
             LogMessage("SerialPort", "TX >>> {0}", makeByteStr(buffer, count));
         }
         public int Read(byte[] buffer, int offset, int count)
         {
             if (IsSimulation)
             {
-                for (int i = 0x0; i < count; i++)
-                    buffer[i] = (byte)(i + 0xA0);
+                byte[] rsp_data = sim_motor.getResponse();
+                System.Array.Copy(rsp_data, buffer, rsp_data.Length);
             }
             else
             {

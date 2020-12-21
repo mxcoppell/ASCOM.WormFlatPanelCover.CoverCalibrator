@@ -9,7 +9,8 @@ namespace ASCOM.WormFlatPanelCover
 {
     class WormFlatPanelWrapper : WormDeviceWrapperCommon
     {
-        public enum BRIGHTNESS { HIGH, LOW }
+        public enum BRIGHTNESS { HIGH = 2, LOW = 1 }
+        public int MaximumBrightness { get { return (int)BRIGHTNESS.HIGH; } }
 
         public int device_handle = 0;
         List<string> flatpanel_serial_numbers = new List<string>();
@@ -17,6 +18,11 @@ namespace ASCOM.WormFlatPanelCover
         public string[] SerialNumbers
         {
             get { return flatpanel_serial_numbers.ToArray(); }
+        }
+
+        public bool IsOpen
+        {
+            get { return (device_handle != 0); }
         }
 
         public WormFlatPanelWrapper(CoverCalibrator drv, bool is_simulation) : base(drv, true)
@@ -37,7 +43,7 @@ namespace ASCOM.WormFlatPanelCover
             device_handle = OpenDeviceHandle(Driver.lastUsedFlatPanelSerial);
             if (device_handle == 0) {
                 LogMessage("FlatPanel", "Failed to connect flat panel device ({0}).", Driver.lastUsedFlatPanelSerial);
-                MessageBox.Show("未能连接平场板设备【" + Driver.lastUsedFlatPanelSerial + "】", "平场板设备", 
+                MessageBox.Show("未能连接平场板设备【" + Driver.lastUsedFlatPanelSerial + "】", "虫子电动平场镜头盖", 
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
@@ -51,6 +57,7 @@ namespace ASCOM.WormFlatPanelCover
                 if (device_handle != 0)
                     UsbRelayDeviceHelper.Close(device_handle);
             }
+            Driver.currentFlatPanelBrightness = 0;
             LogMessage("FlatPanel", "Flat panel device disconnected. ({0})", Driver.lastUsedFlatPanelSerial);
             return true;
         }
@@ -84,6 +91,7 @@ namespace ASCOM.WormFlatPanelCover
                     }
                 }
             }
+            LogMessage("FlatPanel", "Available flat panels: {0}", string.Join(",", flatpanel_serial_numbers));
         }
 
         public int OpenDeviceHandle(string serialnumber)
@@ -93,6 +101,12 @@ namespace ASCOM.WormFlatPanelCover
                 int retval = 1; //  dummy device handle for simulation mode
                 if (!IsSimulation)
                     retval = UsbRelayDeviceHelper.OpenWithSerialNumber(serialnumber, serialnumber.Length);
+                else
+                {
+                    // emulate device failure scenario
+                    if (serialnumber == "WormFlatPanel_#1")
+                        retval = 0;
+                }
                 LogMessage("FlatPanel", "Got device handle ({0}) with usb relay device serial number ({1}).", retval, serialnumber);
                 return retval;
             }
@@ -119,8 +133,47 @@ namespace ASCOM.WormFlatPanelCover
                 LogMessage("FlatPanel", "Flat panel Relay #1 closed.");
                 LogMessage("FlatPanel", "Flat panel Relay #2 closed.");
             }
+            Driver.currentFlatPanelBrightness = 0;
             LogMessage("FlatPanel", "Flat panel turned off.");
             return true;
+        }
+
+        private bool helperOpenChannel(int channel)
+        {
+            bool retval = false;
+            switch (UsbRelayDeviceHelper.OpenOneRelayChannel(device_handle, channel))
+            {
+                case 0:
+                    LogMessage("FlatPanel", "Flat panel Relay #{0} opened.", channel);
+                    retval = true;
+                    break;
+                case 1:
+                    LogMessage("FlatPanel", "Error occured when opening Flat panel Relay #{0}.", channel);
+                    break;
+                case 2:
+                    LogMessage("FlatPanel", "'Index out of range' when opening Flat panel Relay #{0}.", channel);
+                    break;
+            }
+            return retval;
+        }
+
+        private bool helperCloseChannel(int channel)
+        {
+            bool retval = false;
+            switch (UsbRelayDeviceHelper.CloseOneRelayChannel(device_handle, channel))
+            {
+                case 0:
+                    LogMessage("FlatPanel", "Flat panel Relay #{0} closed.", channel);
+                    retval = true;
+                    break;
+                case 1:
+                    LogMessage("FlatPanel", "Error occured when closing Flat panel Relay #{0}.", channel);
+                    break;
+                case 2:
+                    LogMessage("FlatPanel", "'Index out of range' when closing Flat panel Relay #{0}.", channel);
+                    break;
+            }
+            return retval;
         }
 
         public bool TurnOn(BRIGHTNESS brightness)
@@ -132,11 +185,13 @@ namespace ASCOM.WormFlatPanelCover
                 {
                     LogMessage("FlatPanel", "Flat panel Relay #1 closed.");
                     LogMessage("FlatPanel", "Flat panel Relay #2 opened.");
+                    Driver.currentFlatPanelBrightness = 2;
                 }
                 else if (brightness == BRIGHTNESS.LOW)
                 {
                     LogMessage("FlatPanel", "Flat panel Relay #1 opened.");
                     LogMessage("FlatPanel", "Flat panel Relay #2 closed.");
+                    Driver.currentFlatPanelBrightness = 1;
                 }
                 return true;
             }
@@ -148,66 +203,24 @@ namespace ASCOM.WormFlatPanelCover
                     return false;
                 }
 
-                int retval = 0;
                 if (brightness == BRIGHTNESS.HIGH)
                 {
-                    retval = UsbRelayDeviceHelper.CloseOneRelayChannel(device_handle, 1);
-                    switch (retval)
+                    if (helperCloseChannel(1) && helperOpenChannel(2))
+                        Driver.currentFlatPanelBrightness = 2;
+                    else
                     {
-                        case 0:
-                            LogMessage("FlatPanel", "Flat panel Relay #1 closed.");
-                            break;
-                        case 1:
-                            LogMessage("FlatPanel", "Error occured when closing Flat panel Relay #1.");
-                            return false;
-                        case 2:
-                            LogMessage("FlatPanel", "'Index out of range' when closing Flat panel Relay #1.");
-                            return false;
+                        TurnOff();
+                        Driver.currentFlatPanelBrightness = 0;
                     }
-
-                    retval = UsbRelayDeviceHelper.OpenOneRelayChannel(device_handle, 2);
-                    switch (retval)
-                    {
-                        case 0:
-                            LogMessage("FlatPanel", "Flat panel Relay #2 opened.");
-                            break;
-                        case 1:
-                            LogMessage("FlatPanel", "Error occured when opening Flat panel Relay #2.");
-                            return false;
-                        case 2:
-                            LogMessage("FlatPanel", "'Index out of range' when opening Flat panel Relay #2.");
-                            return false;
-                    }
-
                 }
                 else if (brightness == BRIGHTNESS.LOW)
                 {
-                    retval = UsbRelayDeviceHelper.OpenOneRelayChannel(device_handle, 1);
-                    switch (retval)
+                    if (helperOpenChannel(1) && helperCloseChannel(2))
+                        Driver.currentFlatPanelBrightness = 1;
+                    else
                     {
-                        case 0:
-                            LogMessage("FlatPanel", "Flat panel Relay #1 opened.");
-                            break;
-                        case 1:
-                            LogMessage("FlatPanel", "Error occured when opening Flat panel Relay #1.");
-                            return false;
-                        case 2:
-                            LogMessage("FlatPanel", "'Index out of range' when opening Flat panel Relay #1.");
-                            return false;
-                    }
-
-                    retval = UsbRelayDeviceHelper.CloseOneRelayChannel(device_handle, 2);
-                    switch (retval)
-                    {
-                        case 0:
-                            LogMessage("FlatPanel", "Flat panel Relay #2 closed.");
-                            break;
-                        case 1:
-                            LogMessage("FlatPanel", "Error occured when closing Flat panel Relay #2.");
-                            return false;
-                        case 2:
-                            LogMessage("FlatPanel", "'Index out of range' when closing Flat panel Relay #2.");
-                            return false;
+                        TurnOff();
+                        Driver.currentFlatPanelBrightness = 0;
                     }
                 }
                 return true;

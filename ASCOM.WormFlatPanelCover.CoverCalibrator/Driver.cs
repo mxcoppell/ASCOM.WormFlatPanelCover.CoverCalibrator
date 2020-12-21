@@ -74,7 +74,7 @@ namespace ASCOM.WormFlatPanelCover
         internal int currentAngle;  // Current cover opened angle
 
         internal static string targetAngleProfileName = "Target angle / cover travel range";
-        internal static string targetAngleDefault = "525";
+        internal static string targetAngleDefault = "520";
         internal int targetAngle;   // Target angle / cover travel range
 
         internal static string coverMovingSpeedProfileName = "Cover moving speed";
@@ -88,6 +88,10 @@ namespace ASCOM.WormFlatPanelCover
         internal static string lastUsedFlatPanelSerialProfileName = "Serial number string of the last used flat panel";
         internal static string lastUsedFlatPanelSerialDefault = "";
         internal string lastUsedFlatPanelSerial;  // Serial number string of the last used flat panel
+
+        internal static string currentFlatPanelBrightnessProfileName = "Current flat panel brightness";
+        internal static string currentFlatPanelBrightnessDefault = "0";   // 0 - Off, 1 - Brightness Low, 2 - Brightness High
+        internal int currentFlatPanelBrightness;  // Serial number string of the last used flat panel
 
         internal static string traceStateProfileName = "Trace Level";
         internal string traceStateDefault = "true";
@@ -163,10 +167,9 @@ namespace ASCOM.WormFlatPanelCover
         /// </summary>
         public void SetupDialog()
         {
-            // consider only showing the setup dialog if not connected
-            // or call a different dialog if connected
+            //  disconnect device before entering setup dialog
             if (IsConnected)
-                System.Windows.Forms.MessageBox.Show("Already connected, just press OK");
+                Connected = false;
 
             using (SetupDialogForm F = new SetupDialogForm(this))
             {
@@ -175,6 +178,8 @@ namespace ASCOM.WormFlatPanelCover
                 {
                     WriteProfile(); // Persist device configuration values to the ASCOM Profile store
                 }
+                // disconnect device upon exiting setup dialog
+                Connected = false;
             }
         }
 
@@ -333,8 +338,17 @@ namespace ASCOM.WormFlatPanelCover
         {
             get
             {
-                tl.LogMessage("CoverState Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("CoverState", false);
+                CoverStatus status = CoverStatus.Unknown;
+                if (currentAngle >= targetAngle)
+                    status = CoverStatus.Open;
+                else if (currentAngle == 0)
+                    status = CoverStatus.Closed;
+                else if (currentAngle > 0 && currentAngle < targetAngle)
+                    status = CoverStatus.Moving;
+                else
+                    status = CoverStatus.Error;
+                LogMessage("CoverState Get", "CoverStatus = {0}", status);
+                return status;
             }
         }
 
@@ -343,8 +357,9 @@ namespace ASCOM.WormFlatPanelCover
         /// </summary>
         public void OpenCover()
         {
-            tl.LogMessage("OpenCover", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("OpenCover");
+            LogMessage("OpenCover", "Opening worm cover, curr({0}), target({1}).", currentAngle, targetAngle);
+            if (cover.openCover())
+                cover.waitForCoverOpenCompletion();
         }
 
         /// <summary>
@@ -352,8 +367,9 @@ namespace ASCOM.WormFlatPanelCover
         /// </summary>
         public void CloseCover()
         {
-            tl.LogMessage("CloseCover", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("CloseCover");
+            LogMessage("CloseCover", "Closing worm cover, curr({0}), target({1}).", currentAngle, targetAngle);
+            if (cover.closeCover())
+                cover.waitForCoverCloseComletion();
         }
 
         /// <summary>
@@ -361,8 +377,9 @@ namespace ASCOM.WormFlatPanelCover
         /// </summary>
         public void HaltCover()
         {
-            tl.LogMessage("HaltCover", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("HaltCover");
+            cover.stopCoverMotor();
+            cover.voidCoverMotherDriver();
+            tl.LogMessage("HaltCover", "Cover movement stopped.");
         }
 
         /// <summary>
@@ -372,8 +389,16 @@ namespace ASCOM.WormFlatPanelCover
         {
             get
             {
-                tl.LogMessage("CalibratorState Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("CalibratorState", false);
+                CalibratorStatus status = CalibratorStatus.Unknown;
+                if (currentFlatPanelBrightness == 0)
+                    status = CalibratorStatus.Off;
+                else if (currentFlatPanelBrightness == (int)WormFlatPanelWrapper.BRIGHTNESS.LOW 
+                    || currentFlatPanelBrightness == (int)WormFlatPanelWrapper.BRIGHTNESS.HIGH)
+                    status = CalibratorStatus.Ready;
+                else
+                    status = CalibratorStatus.Error;
+                LogMessage("CalibratorState Get", "Flatpanel status = {0}", status);
+                return status;
             }
         }
 
@@ -384,8 +409,8 @@ namespace ASCOM.WormFlatPanelCover
         {
             get
             {
-                tl.LogMessage("Brightness Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("Brightness", false);
+                LogMessage("Brightness Get", $"Current Worm flat panel brightness = {currentFlatPanelBrightness}");
+                return currentFlatPanelBrightness;
             }
         }
 
@@ -396,8 +421,8 @@ namespace ASCOM.WormFlatPanelCover
         {
             get
             {
-                tl.LogMessage("MaxBrightness Get", "Not implemented");
-                throw new ASCOM.PropertyNotImplementedException("MaxBrightness", false);
+                LogMessage("MaxBrightness Get", $"Worm flat panel maximum brightness = {(int)WormFlatPanelWrapper.BRIGHTNESS.HIGH}");
+                return (int)WormFlatPanelWrapper.BRIGHTNESS.HIGH;
             }
         }
 
@@ -407,8 +432,18 @@ namespace ASCOM.WormFlatPanelCover
         /// <param name="Brightness"></param>
         public void CalibratorOn(int Brightness)
         {
-            tl.LogMessage("CalibratorOn", $"Not implemented. Value set: {Brightness}");
-            throw new ASCOM.MethodNotImplementedException("CalibratorOn");
+            if (Brightness > (int)WormFlatPanelWrapper.BRIGHTNESS.HIGH)
+                Brightness = (int)WormFlatPanelWrapper.BRIGHTNESS.HIGH;
+            if (Brightness < 0)
+                Brightness = 0;
+
+            switch (Brightness)
+            {
+                case 0: flat_panel.TurnOff(); break;
+                case 1: flat_panel.TurnOn(WormFlatPanelWrapper.BRIGHTNESS.LOW); break;
+                case 2: flat_panel.TurnOn(WormFlatPanelWrapper.BRIGHTNESS.HIGH); break;
+            }
+            tl.LogMessage("CalibratorOn", $"Worm flat panel turned on. Brightness set: {Brightness}");
         }
 
         /// <summary>
@@ -416,8 +451,8 @@ namespace ASCOM.WormFlatPanelCover
         /// </summary>
         public void CalibratorOff()
         {
-            tl.LogMessage("CalibratorOff", "Not implemented");
-            throw new ASCOM.MethodNotImplementedException("CalibratorOff");
+            flat_panel.TurnOff();
+            tl.LogMessage("CalibratorOff", "Worm flat panel turned off.");
         }
 
         #endregion
@@ -540,6 +575,7 @@ namespace ASCOM.WormFlatPanelCover
                 coverMovingSpeed = Int32.Parse(driverProfile.GetValue(driverID, coverMovingSpeedProfileName, string.Empty, coverMovingSpeedDefault));
                 coverMovingAcceleration = Int32.Parse(driverProfile.GetValue(driverID, coverMovingAccelerationProfileName, string.Empty, coverMovingAccelerationDefault));
                 lastUsedFlatPanelSerial = driverProfile.GetValue(driverID, lastUsedFlatPanelSerialProfileName, string.Empty, lastUsedFlatPanelSerialDefault);
+                currentFlatPanelBrightness = Int32.Parse(driverProfile.GetValue(driverID, currentFlatPanelBrightnessProfileName, string.Empty, currentFlatPanelBrightnessDefault));
             }
         }
 
@@ -559,6 +595,7 @@ namespace ASCOM.WormFlatPanelCover
                 driverProfile.WriteValue(driverID, coverMovingSpeedProfileName, coverMovingSpeed.ToString());
                 driverProfile.WriteValue(driverID, coverMovingAccelerationProfileName, coverMovingAcceleration.ToString());
                 driverProfile.WriteValue(driverID, lastUsedFlatPanelSerialProfileName, lastUsedFlatPanelSerial.ToString());
+                driverProfile.WriteValue(driverID, currentFlatPanelBrightnessProfileName, currentFlatPanelBrightness.ToString());
             }
         }
 

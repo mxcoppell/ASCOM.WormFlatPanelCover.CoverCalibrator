@@ -6,13 +6,6 @@ namespace ASCOM.WormFlatPanelCover
 {
     class WormCoverWrapper : WormSerialPortWrapper
     {
-        // cover operation threads
-        Thread thread_opencover;
-        Thread thread_closecover;
-
-        // cover operation state
-        private bool operation_done = false;
-
         public WormCoverWrapper(CoverCalibrator drv, bool is_simulation) : base(drv, is_simulation) { }
 
         private byte checkSum(byte[] data, int bytes)
@@ -43,6 +36,8 @@ namespace ASCOM.WormFlatPanelCover
             if (!retval)
             {
                 LogMessage("WormCover", "ERROR: (Connect) failed to open serial port. ({0})", Driver.comPort);
+                MessageBox.Show("未能连接镜头盖设备【" + Driver.comPort + "】", "虫子电动平场镜头盖", 
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -95,9 +90,9 @@ namespace ASCOM.WormFlatPanelCover
             return true;
         }
 
-        public bool stopCoverMoter()
+        public bool stopCoverMotor()
         {
-            LogMessage("WormCover", "INFO: (stopCoverMotor) Device({0}))", Driver.comPort);
+            LogMessage("WormCover", "INFO: (stopCoverMotor) Device({0})", Driver.comPort);
 
             DiscardInBuffer();
             DiscardOutBuffer();
@@ -122,7 +117,7 @@ namespace ASCOM.WormFlatPanelCover
 
         public bool voidCoverMotherDriver()
         {
-            LogMessage("WormCover", "INFO: (voidCoverMotorDriver) Device({0}))", Driver.comPort);
+            LogMessage("WormCover", "INFO: (voidCoverMotorDriver) Device({0})", Driver.comPort);
 
             DiscardInBuffer();
             DiscardOutBuffer();
@@ -205,12 +200,12 @@ namespace ASCOM.WormFlatPanelCover
             }
         }
 
-        public void openCover()
+        public bool openCover()
         {
-            if (Driver.currentAngle > Driver.targetAngle)
+            if (Driver.currentAngle >= Driver.targetAngle)
             {
                 LogMessage("WormCover", "INFO: (openCover) worm cover already opened.");
-                return;
+                return false;
             }
 
             if (!IsOpen)
@@ -218,7 +213,7 @@ namespace ASCOM.WormFlatPanelCover
                 LogMessage("WormCover", "ERROR: (openCover) serial port not opened. ({0})", Driver.comPort);
                 MessageBox.Show("镜头盖设备【" + Driver.comPort + "】未连接！", "虫子镜头盖", 
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return false;
             }
 
             LogMessage("WormCover", "INFO: (openCover) Opening Worm cover...");
@@ -226,23 +221,15 @@ namespace ASCOM.WormFlatPanelCover
             setCoverTravelDistance(Driver.targetAngle - Driver.currentAngle, Driver.coverMovingSpeed, Driver.coverMovingAcceleration);
             startCoverMotor();
 
-            /* TODO
-            thread_opencover = new Thread(OpenRead);
-            thread_opencover.IsBackground = true;
-            operation_done = false;
-            thread_opencover.Start();
-
-            while (operation_done == false)
-                System.Threading.Thread.Sleep(1000);
-            */
+            return true;
         }
 
-        public void closeCover()
+        public bool closeCover()
         {
             if (Driver.currentAngle == 0)
             {
                 LogMessage("WormCover", "INFO: (closeCover) Worm cover already closed.");
-                return;
+                return false;
             }
 
             if (!IsOpen)
@@ -250,7 +237,7 @@ namespace ASCOM.WormFlatPanelCover
                 LogMessage("WormCover", "ERROR: (closeCover) Serial port not opened. ({0})", Driver.comPort);
                 MessageBox.Show("镜头盖设备【" + Driver.comPort + "】未连接！", "虫子镜头盖", 
                     MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
+                return false;
             }
 
             LogMessage("WormCover", "INFO: (closeCover) Closing Worm cover...");
@@ -258,18 +245,10 @@ namespace ASCOM.WormFlatPanelCover
             setCoverTravelDistance(-Driver.currentAngle, Driver.coverMovingSpeed, Driver.coverMovingAcceleration);
             startCoverMotor();
 
-            /* TODO
-            thread_closecover = new Thread(CloseRead);
-            thread_closecover.IsBackground = true;
-            operation_done = false;
-            thread_closecover.Start();
-
-            while (operation_done == false)
-                System.Threading.Thread.Sleep(1000);
-            */
+            return true;
         }
 
-        private int getCoverRealtimeAngle()
+        public int getCoverRealtimeAngle()
         {
             byte[] rx_buffer = new byte[32];
 
@@ -301,10 +280,8 @@ namespace ASCOM.WormFlatPanelCover
             return System.BitConverter.ToInt32(calc_angle, 0) / 8;
         }
 
-        //
-        //  Cover open monitoring thread routine
-        //
-        private void OpenRead()
+        //  Cover opening monitoring thread routine, could be called in a blocking scenario
+        public void waitForCoverOpenCompletion()
         {
             DateTime start_time = DateTime.Now;
             while (true)
@@ -312,24 +289,22 @@ namespace ASCOM.WormFlatPanelCover
                 int rt_angle = getCoverRealtimeAngle();
                 LogMessage("WormCover", "INFO: (Opening) current position " + rt_angle + " ...");
 
-                // TODO - write real-time angle to profile
-                //Configuration appConf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                //appConf.AppSettings.Settings["angle"].Value = jd.ToString();
-                //appConf.Save(ConfigurationSaveMode.Modified);
-                //ConfigurationManager.RefreshSection("appSettings");
+                Driver.currentAngle = rt_angle;
+                if (rt_angle > Driver.targetAngle) rt_angle = Driver.targetAngle;
+                Driver.WriteProfile();
 
                 if (rt_angle >= Driver.targetAngle || rt_angle == -999 || DateTime.Now > start_time.AddMinutes(2))
                 {
                     Thread.Sleep(3000);
-                    stopCoverMoter();
+                    stopCoverMotor();
                     voidCoverMotherDriver();
                     break;
                 }
             }
-            operation_done = true;
         }
 
-        private void CloseRead()
+        //  Cover closing monitoring thread routine, could be called in a blocking scenario
+        public void waitForCoverCloseComletion()
         {
             DateTime start_time = DateTime.Now;
             while (true)
@@ -337,21 +312,19 @@ namespace ASCOM.WormFlatPanelCover
                 int rt_angle = Driver.targetAngle + getCoverRealtimeAngle();
                 LogMessage("WormCover", "(Closing) current position " + rt_angle + " ...");
 
-                // TODO
-                //Configuration appConf = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-                //appConf.AppSettings.Settings["angle"].Value = jd.ToString();
-                //appConf.Save(ConfigurationSaveMode.Modified);
-                //ConfigurationManager.RefreshSection("appSettings");
+                Driver.currentAngle = rt_angle;
+                if (rt_angle < 0) rt_angle = 0;
+                if (rt_angle > Driver.targetAngle) rt_angle = Driver.targetAngle;
+                Driver.WriteProfile();
 
                 if (rt_angle == 0 || rt_angle == -999 || DateTime.Now > start_time.AddMinutes(2))
                 {
                     Thread.Sleep(3000);
-                    stopCoverMoter();
+                    stopCoverMotor();
                     voidCoverMotherDriver();
                     break;
                 }
             }
-            operation_done = true;
         }
     }
 }
