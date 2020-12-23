@@ -14,12 +14,14 @@ namespace ASCOM.WormFlatPanelCover
 
         SerialPort serial_port = new SerialPort();
 
-        SimMotorResponder sim_motor = new SimMotorResponder();
+        SimMotorResponder sim_motor = null;
 
         public WormSerialPortWrapper(CoverCalibrator drv, bool is_simulation) : base(drv, is_simulation)
         {
             if (IsSimulation)
             {
+                sim_motor = new SimMotorResponder(drv);
+
                 LogMessage("SerialPort", "Simulation mode is ON.");
                 PortNames = new string[] { "COM1", "COM2", "COM3", "COM4", "COM5", "COM6", "COM7", "COM8" };
             }

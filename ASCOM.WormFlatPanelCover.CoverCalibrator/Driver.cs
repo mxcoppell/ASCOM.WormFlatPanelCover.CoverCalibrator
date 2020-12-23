@@ -33,6 +33,7 @@ using System;
 using System.Collections;
 using System.Globalization;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace ASCOM.WormFlatPanelCover
 {
@@ -127,6 +128,16 @@ namespace ASCOM.WormFlatPanelCover
         /// </summary>
         internal TraceLogger tl;
 
+        ///
+        /// cover status
+        ///
+        CoverStatus cover_status = CoverStatus.Unknown;
+
+        ///
+        /// flat panel status
+        ///
+        CalibratorStatus calibrator_status = CalibratorStatus.Unknown;
+
         /// <summary>
         /// Initializes a new instance of the <see cref="WormFlatPanelCover"/> class.
         /// Must be public for COM registration.
@@ -148,6 +159,9 @@ namespace ASCOM.WormFlatPanelCover
 
             flat_panel = new WormFlatPanelWrapper(this, simulationState);
             LogMessage("CoverCalibrator", "Flat panel controller created (Simulation:{0}).", simulationState);
+
+            SetCoverStatus();
+            SetCalibratorStatus();
 
             tl.LogMessage("CoverCalibrator", "Completed initialisation");
         }
@@ -336,21 +350,62 @@ namespace ASCOM.WormFlatPanelCover
         /// </summary>
         public CoverStatus CoverState
         {
-            get
-            {
-                CoverStatus status = CoverStatus.Unknown;
-                if (currentAngle >= targetAngle)
-                    status = CoverStatus.Open;
-                else if (currentAngle == 0)
-                    status = CoverStatus.Closed;
-                else if (currentAngle > 0 && currentAngle < targetAngle)
-                    status = CoverStatus.Moving;
-                else
-                    status = CoverStatus.Error;
-                LogMessage("CoverState Get", "CoverStatus = {0}", status);
-                return status;
+            get 
+            { 
+                LogMessage("CoverState Get", "CoverStatus = {0}", cover_status);
+                return cover_status;
             }
         }
+
+        private void threadWaitForCoverOpenCompletion()
+        {
+            DateTime start_time = DateTime.Now;
+            while (cover_status == CoverStatus.Moving) 
+            {
+                int rt_angle = cover.getCoverRealtimeAngle();
+                LogMessage("WaitForCoverOpenCompletion", "INFO: (Opening) current position " + rt_angle + " ...");
+
+                if (rt_angle > targetAngle) rt_angle = targetAngle;
+                currentAngle = rt_angle;
+                WriteProfile();
+
+                if (rt_angle >= targetAngle || rt_angle == -999 || DateTime.Now > start_time.AddMinutes(2))
+                {
+                    if (rt_angle >= targetAngle)
+                        cover_status = CoverStatus.Open;
+                    Thread.Sleep(3000);
+                    cover.stopCoverMotor();
+                    cover.stopCoverMotorDrive();
+                    break;
+                }
+            }
+        }
+
+        private void threadWaitForCoverCloseCompletion()
+        {
+            DateTime start_time = DateTime.Now;
+            while (cover_status == CoverStatus.Moving) 
+            {
+                int rt_angle = targetAngle + cover.getCoverRealtimeAngle();
+                LogMessage("WaitForCoverCloseCompletion", "(Closing) current position " + rt_angle + " ...");
+
+                if (rt_angle < 0) rt_angle = 0;
+                if (rt_angle > targetAngle) rt_angle = targetAngle;
+                currentAngle = rt_angle;
+                WriteProfile();
+
+                if (rt_angle == 0 || rt_angle == -999 || DateTime.Now > start_time.AddMinutes(2))
+                {
+                    if (rt_angle == 0)
+                        cover_status = CoverStatus.Closed;
+                    Thread.Sleep(3000);
+                    cover.stopCoverMotor();
+                    cover.stopCoverMotorDrive();
+                    break;
+                }
+            }
+        }
+
 
         /// <summary>
         /// Initiates cover opening if a cover is present
@@ -358,8 +413,13 @@ namespace ASCOM.WormFlatPanelCover
         public void OpenCover()
         {
             LogMessage("OpenCover", "Opening worm cover, curr({0}), target({1}).", currentAngle, targetAngle);
+            cover_status = CoverStatus.Moving;
             if (cover.openCover())
-                cover.waitForCoverOpenCompletion();
+            {
+                Thread thread_opencover = new Thread(threadWaitForCoverOpenCompletion);
+                thread_opencover.IsBackground = true;
+                thread_opencover.Start();
+            }
         }
 
         /// <summary>
@@ -368,8 +428,13 @@ namespace ASCOM.WormFlatPanelCover
         public void CloseCover()
         {
             LogMessage("CloseCover", "Closing worm cover, curr({0}), target({1}).", currentAngle, targetAngle);
+            cover_status = CoverStatus.Moving;
             if (cover.closeCover())
-                cover.waitForCoverCloseComletion();
+            {
+                Thread thread_closecover = new Thread(threadWaitForCoverCloseCompletion);
+                thread_closecover.IsBackground = true;
+                thread_closecover.Start();
+            }
         }
 
         /// <summary>
@@ -377,9 +442,10 @@ namespace ASCOM.WormFlatPanelCover
         /// </summary>
         public void HaltCover()
         {
+            cover_status = CoverStatus.Unknown;
             cover.stopCoverMotor();
-            cover.voidCoverMotherDriver();
-            tl.LogMessage("HaltCover", "Cover movement stopped.");
+            cover.stopCoverMotorDrive();
+            tl.LogMessage("HaltCover", $"Cover movement stopped at angle {currentAngle} with target angle {targetAngle}.");
         }
 
         /// <summary>
@@ -389,16 +455,8 @@ namespace ASCOM.WormFlatPanelCover
         {
             get
             {
-                CalibratorStatus status = CalibratorStatus.Unknown;
-                if (currentFlatPanelBrightness == 0)
-                    status = CalibratorStatus.Off;
-                else if (currentFlatPanelBrightness == (int)WormFlatPanelWrapper.BRIGHTNESS.LOW 
-                    || currentFlatPanelBrightness == (int)WormFlatPanelWrapper.BRIGHTNESS.HIGH)
-                    status = CalibratorStatus.Ready;
-                else
-                    status = CalibratorStatus.Error;
-                LogMessage("CalibratorState Get", "Flatpanel status = {0}", status);
-                return status;
+                LogMessage("CalibratorState Get", "Flatpanel status = {0}", calibrator_status);
+                return calibrator_status;
             }
         }
 
@@ -432,16 +490,23 @@ namespace ASCOM.WormFlatPanelCover
         /// <param name="Brightness"></param>
         public void CalibratorOn(int Brightness)
         {
-            if (Brightness > (int)WormFlatPanelWrapper.BRIGHTNESS.HIGH)
-                Brightness = (int)WormFlatPanelWrapper.BRIGHTNESS.HIGH;
-            if (Brightness < 0)
-                Brightness = 0;
+            if (Brightness > (int)WormFlatPanelWrapper.BRIGHTNESS.HIGH || Brightness < 0)
+                throw new InvalidValueException($"CalibratorOn received invalid brightness ({Brightness}).");
 
             switch (Brightness)
             {
-                case 0: flat_panel.TurnOff(); break;
-                case 1: flat_panel.TurnOn(WormFlatPanelWrapper.BRIGHTNESS.LOW); break;
-                case 2: flat_panel.TurnOn(WormFlatPanelWrapper.BRIGHTNESS.HIGH); break;
+                case 0: 
+                    flat_panel.TurnOff(); 
+                    calibrator_status = CalibratorStatus.Ready;
+                    break;
+                case 1: 
+                    flat_panel.TurnOn(WormFlatPanelWrapper.BRIGHTNESS.LOW);
+                    calibrator_status = CalibratorStatus.Ready;
+                    break;
+                case 2: 
+                    flat_panel.TurnOn(WormFlatPanelWrapper.BRIGHTNESS.HIGH);
+                    calibrator_status = CalibratorStatus.Ready;
+                    break;
             }
             tl.LogMessage("CalibratorOn", $"Worm flat panel turned on. Brightness set: {Brightness}");
         }
@@ -452,6 +517,7 @@ namespace ASCOM.WormFlatPanelCover
         public void CalibratorOff()
         {
             flat_panel.TurnOff();
+            calibrator_status = CalibratorStatus.Off;
             tl.LogMessage("CalibratorOff", "Worm flat panel turned off.");
         }
 
@@ -610,6 +676,37 @@ namespace ASCOM.WormFlatPanelCover
             var msg = string.Format(message, args);
             tl.LogMessage(identifier, msg);
         }
+
+        ///
+        /// Set proper cover status
+        /// 
+        internal void SetCoverStatus()
+        {
+            cover_status = CoverStatus.Unknown;
+            if (!cover.IsOpen)
+                cover_status = CoverStatus.NotPresent;
+            else if (currentAngle >= targetAngle)
+                cover_status = CoverStatus.Open;
+            else if (currentAngle == 0)
+                cover_status = CoverStatus.Closed;
+            else if (currentAngle > 0 && currentAngle < targetAngle)
+                cover_status = CoverStatus.Unknown;
+            else
+                cover_status = CoverStatus.Error;
+            LogMessage("SetCoverStatus", "CoverStatus = {0}", cover_status);
+        }
+
+        ///
+        /// Set proper cover status
+        /// 
+        internal void SetCalibratorStatus()
+        {
+            calibrator_status = CalibratorStatus.Unknown;
+            if (!flat_panel.IsOpen)
+                calibrator_status = CalibratorStatus.NotPresent;
+            LogMessage("SetCalibratorStatus", "CalibratorStatus = {0}", calibrator_status);
+        }
+
         #endregion
     }
 }

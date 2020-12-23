@@ -12,6 +12,8 @@ namespace ASCOM.WormFlatPanelCover
         CoverCalibrator driver; // driver reference
         TraceLogger tl; // Holder for a reference to the driver's trace logger
 
+        bool halt_command = false;
+
         public SetupDialogForm(CoverCalibrator drvr)
         {
             InitializeComponent();
@@ -96,6 +98,9 @@ namespace ASCOM.WormFlatPanelCover
             progressBar_Cover.Maximum = driver.targetAngle;
             progressBar_Cover.Value = driver.currentAngle;
 
+            driver.SetCoverStatus();
+            driver.SetCalibratorStatus();
+
             // check cover data and set command button status
             thread_UpdateCoverCommands(false);
             // check flat panel data and set command button status
@@ -127,6 +132,7 @@ namespace ASCOM.WormFlatPanelCover
             driver.comPort = (string)comboBox_ComPort.SelectedItem;
             driver.WriteProfile();
             driver.cover.Connect();
+            driver.SetCoverStatus();
             thread_UpdateCoverCommands(false);
         }
 
@@ -188,6 +194,7 @@ namespace ASCOM.WormFlatPanelCover
             driver.lastUsedFlatPanelSerial = (string)comboBox_FlatPanels.SelectedItem;
             driver.WriteProfile();
             driver.flat_panel.Connect();
+            driver.SetCalibratorStatus();
             thread_UpdateFlatPanelCommands(false);
         }
 
@@ -196,10 +203,10 @@ namespace ASCOM.WormFlatPanelCover
             driver.coverMovingSpeed = Int32.Parse(textBox_CoverMoveSpeed.Text);
             driver.WriteProfile();
         }
-        private void threadWaitForCoverOpenCompletion()
+        private void ui_threadWaitForCoverOpenCompletion()
         {
             DateTime start_time = DateTime.Now;
-            while (true)
+            while (!halt_command)
             {
                 int rt_angle = driver.cover.getCoverRealtimeAngle();
                 driver.LogMessage("SetupDialog", "INFO: (Opening) current position " + rt_angle + " ...");
@@ -213,7 +220,7 @@ namespace ASCOM.WormFlatPanelCover
                 {
                     Thread.Sleep(3000);
                     driver.cover.stopCoverMotor();
-                    driver.cover.voidCoverMotherDriver();
+                    driver.cover.stopCoverMotorDrive();
                     break;
                 }
             }
@@ -228,19 +235,21 @@ namespace ASCOM.WormFlatPanelCover
             progressBar_Cover.Maximum = driver.targetAngle;
             progressBar_Cover.Value = driver.currentAngle;
 
+            halt_command = false;
+
             if (driver.cover.openCover())
             {
                 thread_SetCoverUIState(false, false);
-                Thread thread_opencover = new Thread(threadWaitForCoverOpenCompletion);
+                Thread thread_opencover = new Thread(ui_threadWaitForCoverOpenCompletion);
                 thread_opencover.IsBackground = true;
                 thread_opencover.Start();
             }
         }
 
-        private void threadWaitForCoverCloseCompletion()
+        private void ui_threadWaitForCoverCloseCompletion()
         {
             DateTime start_time = DateTime.Now;
-            while (true)
+            while (!halt_command)
             {
                 int rt_angle = driver.targetAngle + driver.cover.getCoverRealtimeAngle();
                 driver.LogMessage("SetupDialog", "(Closing) current position " + rt_angle + " ...");
@@ -255,7 +264,7 @@ namespace ASCOM.WormFlatPanelCover
                 {
                     Thread.Sleep(3000);
                     driver.cover.stopCoverMotor();
-                    driver.cover.voidCoverMotherDriver();
+                    driver.cover.stopCoverMotorDrive();
                     break;
                 }
             }
@@ -270,10 +279,12 @@ namespace ASCOM.WormFlatPanelCover
             progressBar_Cover.Maximum = driver.targetAngle;
             progressBar_Cover.Value = driver.currentAngle;
 
+            halt_command = false;
+
             if (driver.cover.closeCover())
             {
                 thread_SetCoverUIState(false, false);
-                Thread thread_closecover = new Thread(threadWaitForCoverCloseCompletion);
+                Thread thread_closecover = new Thread(ui_threadWaitForCoverCloseCompletion);
                 thread_closecover.IsBackground = true;
                 thread_closecover.Start();
             }
@@ -304,6 +315,7 @@ namespace ASCOM.WormFlatPanelCover
             {
                 MethodInvoker m;
                 m = new MethodInvoker(() => button_OpenCover.Enabled = state); button_OpenCover.Invoke(m);
+                m = new MethodInvoker(() => button_HaltCover.Enabled = !state); button_HaltCover.Invoke(m);
                 m = new MethodInvoker(() => button_CloseCover.Enabled = state); button_CloseCover.Invoke(m);
                 m = new MethodInvoker(() => cmdOK.Enabled = state); cmdOK.Invoke(m);
                 m = new MethodInvoker(() => cmdCancel.Enabled = state); cmdCancel.Invoke(m);
@@ -316,6 +328,7 @@ namespace ASCOM.WormFlatPanelCover
             else
             {
                 button_OpenCover.Enabled = state;
+                button_HaltCover.Enabled = !state;
                 button_CloseCover.Enabled = state;
                 cmdOK.Enabled = state;
                 cmdCancel.Enabled = state;
@@ -338,6 +351,8 @@ namespace ASCOM.WormFlatPanelCover
                     button_CloseCover.Invoke(m);
                     m = new MethodInvoker(() => button_OpenCover.Enabled = false);
                     button_OpenCover.Invoke(m);
+                    m = new MethodInvoker(() => button_HaltCover.Enabled = false);
+                    button_HaltCover.Invoke(m);
                     return;
                 }
                 if (driver.currentAngle > 0)
@@ -360,6 +375,8 @@ namespace ASCOM.WormFlatPanelCover
                     m = new MethodInvoker(() => button_OpenCover.Enabled = false);
                     button_OpenCover.Invoke(m);
                 }
+                m = new MethodInvoker(() => button_HaltCover.Enabled = false);
+                button_HaltCover.Invoke(m);
             }
             else
             {
@@ -367,6 +384,7 @@ namespace ASCOM.WormFlatPanelCover
                 {
                     button_CloseCover.Enabled = false;
                     button_OpenCover.Enabled = false;
+                    button_HaltCover.Enabled = false;
                     return;
                 }
                 if (driver.currentAngle > 0)
@@ -377,6 +395,7 @@ namespace ASCOM.WormFlatPanelCover
                     button_OpenCover.Enabled = true;
                 else
                     button_OpenCover.Enabled = false;
+                button_HaltCover.Enabled = false;
             }
         }
 
@@ -417,6 +436,16 @@ namespace ASCOM.WormFlatPanelCover
                 button_FlatPanelLow.Enabled = true;
                 button_FlatPanelOff.Enabled = false;
             }
+        }
+
+        private void button_HaltCover_Click(object sender, EventArgs e)
+        {
+            // TODO: do we need to employ any delay for the motor here?
+            halt_command = true;
+            driver.cover.stopCoverMotor();
+            driver.cover.stopCoverMotorDrive();
+
+            driver.LogMessage("SetupDialog", "User clicked Halt Cover, curr({0}), target({1}).", driver.currentAngle, driver.targetAngle);
         }
     }
 }
