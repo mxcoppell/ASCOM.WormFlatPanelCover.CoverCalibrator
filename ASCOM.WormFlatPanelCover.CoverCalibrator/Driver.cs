@@ -683,9 +683,7 @@ namespace ASCOM.WormFlatPanelCover
         internal void SetCoverStatus()
         {
             cover_status = CoverStatus.Unknown;
-            if (!cover.IsOpen)
-                cover_status = CoverStatus.NotPresent;
-            else if (currentAngle >= targetAngle)
+            if (currentAngle >= targetAngle)
                 cover_status = CoverStatus.Open;
             else if (currentAngle == 0)
                 cover_status = CoverStatus.Closed;
@@ -701,9 +699,7 @@ namespace ASCOM.WormFlatPanelCover
         /// 
         internal void SetCalibratorStatus()
         {
-            calibrator_status = CalibratorStatus.Unknown;
-            if (!flat_panel.IsOpen)
-                calibrator_status = CalibratorStatus.NotPresent;
+            calibrator_status = CalibratorStatus.Ready;
             LogMessage("SetCalibratorStatus", "CalibratorStatus = {0}", calibrator_status);
         }
 
